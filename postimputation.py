@@ -60,7 +60,8 @@ class Postimputation(object):
                 f.write(i)
 
 def all_merge(batch):
-    cmd="(zcat final.chr1.vcf.gz|head -20|grep '^#';zcat final.chr*|grep -v '^#' )|vcf-sort -c |bgzip >{}.vcf.gz".format(batch)
+    #cmd='bcftools merge --threads 32 -o {}.vcf.gz -O z -l vcf_list.txt'.format(batch)
+    cmd="(less final.chr1.vcf.gz|head -30;less final.chr*vcf.gz|grep -v '^#')|vcf-sort -c|bgzip >{}.vcf.gz".format(batch)
     subprocess.call(cmd,shell=True)
     
 

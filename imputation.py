@@ -1,4 +1,4 @@
-#!/use/bin/env python2
+#!/usr/bin/env python2
 # coding:utf-8
 import gzip
 import os
@@ -111,7 +111,7 @@ class Imputation(object):
         cmd1 = "#!/bin/bash\n#$ -N wgs.{}.{}.pbs\n#$ -pe smp 8\n#$ -q all.q\n#$ -cwd\n".format(
             part, block_it)
         cmd2 = "set -e\ncd {}\n".format(self.workspace)
-        cmd3 = "java -Djava.io.tmpdir=/share/data1/tmp/ -Xss5m -Xmx128g -jar /share/data1/local/bin/beagle.27Jan18.7e1.jar gtgl={vcf}.vcf.gz ref=/share/data1/PublicProject/BEAGLE/eas.allgrch38.genotype.bref map=/share/data1/PublicProject/BEAGLE/plink.{plink}.GRCh38.map out=mid_{vcf} lowmem=true ;\nwait ;".format(
+        cmd3 = "java -Djava.io.tmpdir=/share/data1/tmp/ -Xss5m -Xmx128g -jar /share/data1/local/bin/beagle.27Jan18.7e1.jar gtgl={vcf}.vcf.gz ref=/share/data3/lianlin/soft/bin/wgs/eas/eas.allgrch38.dropdup.genotype.bref map=/share/data1/PublicProject/BEAGLE/plink.{plink}.GRCh38.map out=mid_{vcf} lowmem=true ;\nwait ;".format(
             vcf=block_name.replace('.vcf.gz', ''), plink=part)
         with open('wgs.{}.{}.pbs'.format(part, block_it), 'w') as f:
             f.write(cmd1+cmd2+cmd3)

@@ -4,13 +4,16 @@ set -e
 
 trimmomatic="/share/data1/local/bin/trimmomatic-0.38.jar"
 gatk="/share/data1/src/gatk/gatk"
+gatk3="java -Xmx32g -jar /share/data1/local/bin/GenomeAnalysisTK.jar"
 seqtk="/share/data1/src/bwa/bwakit/seqtk"
 annovar="/share/data1/src/annovar/"
 dbsnp="/share/data1/PublicProject/GATK_bundle/dbsnp150_chr.vcf.gz"
-indel="/share/data1/PublicProject/GATK_bundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+indel1="/share/data1/PublicProject/GATK_bundle/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+indel2="/share/data1/PublicProject/GATK_bundle/Homo_sapiens_assembly38.known_indels.vcf.gz"
 snp="/share/data1/PublicProject/GATK_bundle/1000G_phase1.snps.high_confidence.hg38.vcf.gz"
 reference="/share/data1/genome/hs38DH.fa"
-eas_allele="/share/data1/PublicProject/BEAGLE/eas.allgrch38.sites_chr.vcf.gz"
+#eas_allele="/share/data1/PublicProject/BEAGLE/eas.allgrch38.sites_chr.vcf.gz"
+eas_allele="/share/data3/lianlin/soft/bin/wgs/eas/eas.allgrch38.dropdup.genotype.vcf.gz"
 imputation="/share/data3/lianlin/soft/bin/wgs/imputation.py"
 postimputation="/share/data3/lianlin/soft/bin/wgs/postimputation.py"
 
@@ -59,12 +62,13 @@ do
     markduplicate=''${gatk}' MarkDuplicates -I '${run}'.'${sample}'.aln.bam -O '${sample}'.dedup.bam -M '${sample}'.dedup.log -PG null --TMP_DIR ~/tmp/'${sample}' ;'
     index='samtools index -@ 4 '${sample}'.dedup.bam ;'
     CollectWgsMetrics=''${gatk}' CollectWgsMetrics -I '${sample}'.dedup.bam -O '${sample}'_hs_metrics.txt -R '${reference}' &'
-    BaseRecalibrator=''${gatk}' BaseRecalibrator -I '${sample}'.dedup.bam -O '${sample}'.recal.table --known-sites '$indel' --known-sites '$snp'  -R '${reference}' ;'
-    ApplyBQSR=''${gatk}' ApplyBQSR -I '${sample}'.dedup.bam -O '${sample}'.dedup.bqsr.bam -bqsr '${sample}'.recal.table -R '${reference}' ;'
-    HaplotypeCaller=''${gatk}' HaplotypeCaller  --genotyping-mode GENOTYPE_GIVEN_ALLELES --output-mode EMIT_ALL_SITES -I '${sample}'.dedup.bqsr.bam -O '${sample}'.HC.vcf.gz --dbsnp '$dbsnp'  -R '${reference}' --alleles '$eas_allele' ;'
+    RealignerTargetCreator=''$gatk3' -T RealignerTargetCreator -R '${reference}' -I '${sample}'.dedup.bam -o '${sample}'_forIndelRealigner.intervals -nt 8 --known '$indel1' --known '$indel2' ;'
+    IndelRealigner=''$gatk3' -T IndelRealigner -R '${reference}' -I '${sample}'.dedup.bam -known '$indel1' -known '$indel2' -targetIntervals '${sample}'_forIndelRealigner.intervals -o '${sample}'_realign.bam ;'
+    BaseRecalibrator=''${gatk}' BaseRecalibrator -I '${sample}'_realign.bam -O '${sample}'.recal.table --known-sites '$indel1' --known-sites '$snp'  -R '${reference}' ;'
+    ApplyBQSR=''${gatk}' ApplyBQSR -I '${sample}'_realign.bam -O '${sample}'.dedup.bqsr.bam -bqsr '${sample}'.recal.table -R '${reference}' ;'
     sge="#$ -N ${sample}\n#$ -pe smp 32\n#$ -q all.q\n#$ -cwd\nset -e\ncd $pwd\nsource ~/.bash_profile\n"
-    echo -e "$sge\n${trim}\n$bwa\n$markduplicate\n$index\n$CollectWgsMetrics\n$BaseRecalibrator\n$ApplyBQSR\n$HaplotypeCaller\nwait ;" > ${sample}.bat
-
+    #echo -e "$sge\n${trim}\n$bwa\n$markduplicate\n$index\n$CollectWgsMetrics\n$RealignerTargetCreator\n$IndelRealigner\n$BaseRecalibrator\n$ApplyBQSR\nwait ;" > ${sample}.bat
+    echo -e "$sge\n$IndelRealigner\n$BaseRecalibrator\n$ApplyBQSR\nwait ;" > ${sample}.bat
 done
 
 if [ -f 'genotype.bat' ]
@@ -76,14 +80,16 @@ if [ $i == 1 ]
 then
     mergebam=''
     cram='samtools view -C -T '${reference}' -@ 4 -o '${final}'_bqsr.cram '${sample}'.dedup.bqsr.bam &' 
+    UnifiedGenotyper=''$gatk3' -T UnifiedGenotyper -I '${sample}'.dedup.bqsr.bam -o multiplex.vcf.gz --dbsnp '$dbsnp'  -R '${reference}' --output_mode EMIT_ALL_SITES --genotyping_mode GENOTYPE_GIVEN_ALLELES --alleles '$eas_allele''
+
 
 else
     mergebam='samtools merge -f -@ 32 -O bam '${final}_bqsr.bam' '$(echo ${samples[@]}|sed 's/\s/.dedup.bqsr.bam /g')'.dedup.bqsr.bam ;'
     cram='samtools view -C -T '${reference}' -@ 4 -o '${final}'_bqsr.cram '${final}'_bqsr.bam &' 
+    UnifiedGenotyper=''$gatk3' -T UnifiedGenotyper -I '$(echo ${samples[@]}|sed 's/\s/.dedup.bqsr.bam /g'|sed 's/\s/ -I /g')'.dedup.bqsr.bam -o multiplex.vcf.gz --dbsnp '$dbsnp'  -R '${reference}' --output_mode EMIT_ALL_SITES --genotyping_mode GENOTYPE_GIVEN_ALLELES --alleles '$eas_allele''
+
 fi
 sge="#$ -N imputation\n#$ -pe smp 32\n#$ -q all.q\n#$ -cwd\nset -e\ncd $pwd\nsource ~/.bash_profile\n"
-MergeVcfs=''${gatk}' MergeVcfs -R '${reference}' -I '$(echo ${samples[@]}|sed 's/\s/.HC.vcf.gz /g'|sed 's/\s/ -V /g')'.HC.vcf.gz -O '${final}'.vcf.gz ;'
-
 beagle_work="$pwd/beagle"
 
 if [ -d $beagle_work ]
@@ -93,8 +99,10 @@ fi
     
 
 
-beagle='mkdir '$beagle_work' ;\ncd '$beagle_work' ;\n'$imputation' ../'${final}'.vcf.gz ;'
-echo -e "$sge\n$mergebam\n$cram\n$MergeVcfs\n$beagle\nwait ;"|sed '/^$/d' > genotype.bat
+beagle='mkdir '$beagle_work' ;\ncd '$beagle_work' ;\n'$imputation' ../multiplex.vcf.gz ;'
+#echo -e "$sge\n$mergebam\n$cram\n$UnifiedGenotyper\n$beagle\nwait ;"|sed '/^$/d' > genotype.bat
+echo -e "$sge\n$mergebam\n$cram\n$UnifiedGenotyper\n$beagle\nwait ;"|sed '/^$/d' > genotype.bat
+
 echo -e 'cd '$beagle_work' ;\n'$postimputation' '$final' ;\nwait ;' >asnoerror.bat
 chmod +x asnoerror.bat
 chmod +x genotype.bat
