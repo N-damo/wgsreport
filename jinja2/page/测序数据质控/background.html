@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>layui</title>
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+  <link rel='stylesheet' type='text/css' href="../../css/style.css"/>
+</head>
+<body class="layui-form" style="background-color:#eee;padding: 20px;">
+    <div class="layui-fluid">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-xs12" >
+                    <h1>原始数据质控</h1>
+                    <p>
+                        Illumina测序属于第二代测序技术，单次运行能产生数百万级的Reads，如此海量的数据无法逐个展示每条Reads的质量情况；运用统计学的方法，对所有测序Reads的每个Cycle进行碱基分布和质量波动的统计，
+                        可以从宏观上直观地反映出样本的测序质量和文库构建质量。我们针对每一个样本的原始测序数据进行测序相关质量评估，包括A/T/G/C碱基含量分布统计和碱基错误率分布统计。
+                    </p>
+                </div>
+                <div class="layui-col-xs12" >
+                    <div class="layui-row layui-col-space20">
+                        <div class="layui-col-xs12">
+                            <h1 >测序数据背景介绍</h1>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p>
+                                为方便测序数据的分析、发布和共享，Illumina Hiseq平台测序得到的原始图像数据经过Base Calling转化为序列数据，得到最原始的测序数据文件。
+                                原始数据一般存储为FASTQ格式。FASTQ格式文件可记录所测读段（Reads）的碱基及其质量分数，每条Reads在FASTQ格式文件中占四行，其中第一行和第三行由文件识别标志（Sequence Identifiers）和读段名（ID）组成（第一行以“@”开头而第三行以“+”开头；第三行中ID可以省略，但“+”不能省略），第二行为碱基序列，第四行为对应位置碱基的测序质量分数。
+                            </p>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <h3 style="color: yellowgreen">读段FASTQ数据格式示例如下所示：</h3>
+                            <img class='middle_img' src="../../img/specimen_overview_1.png" />
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p>
+                                Illumina HiSeq测序仪一个Run有2个Flowcell，一个Flowcell中包含8个Lane，其中一个Lane包含2列，每一列又包含60个Tile，每一个Tile又会种下不同的Cluster（即确定的Reads）。为便于识别，测序Reads识别码（Sequence Identifiers）的详细说明如下表所示：
+                            </p>
+                            <img class='middle_img' src="../../img/specimen_overview_2.png" />
+                        </div>
+                        <div class="layui-col-xs12">
+                            <h2>
+                                测序数据质控
+                            </h2>
+                            <p>
+                                测序数据的质控一般包括测序碱基含量分布和测序碱基错误率分布。碱基含量分布一般用于检测有无A与T、G与C分离现象--由于碱基互补配对原则和基因组序列的随机性，理论上每个测序循环上的GC含量相等、AT含量相等，且在整个测序过程基本稳定不变；而测序碱基错误率分布则是统计测序数据中测序质量随读长增加的变化情况，这是由于测序过程中化学试剂的消耗导致的，另外，由于Illumina Hiseq测序的技术特点，测序片段前端几个Cycles和末端的错误率会偏高。
+                            </p>
+                            <p>
+                                Reads的质量分数以不同的字符来表示，在Hiseq平台中，将每个字符对应的ASCII码减去33，即为对应的测序质量值。一般地，碱基质量0-40，即对应的ASCII码为从“!”（0+33）到“I”(40+33），碱基质量越大，可信度越高。如果用e表示测序错误率，用Q表示Illumina HiSeq的碱基质量值，则有下列关系：
+                            </p>
+                            <img class='middle_img' style='width: 25%;' src="../../img/specimen_overview_3.png" />
+                        <p>
+                            Reads的质量分数与ASCII码的关系如下表所示：
+                        </p>
+                        <img class='middle_img' src="../../img/specimen_overview_4.png" />
+                        </div>
+                        <div class="layui-col-xs12">
+                            <h2>
+                                测序数据过滤
+                            </h2>
+                            <p>由于Illumina的原始测序数据会存在一些质量比较低的数据，所以需要进行质量过滤，获得高质量测序数据，具体标准如下：</p>
+                            <p>Step 1：去除Reads中的Adapter序列；</p>
+                            <p>Step 2：剪切掉5’端测序质量值低于20或识别为N的碱基；</p>
+                            <p>Step 3：剪切掉3’端测序质量值低于20或识别为N的碱基；</p>
+                            <p>Step 4：以4个碱基为Window，剪切掉平均质量值小于20的Window中的碱基；</p>
+                            <p>Step 5：去除含N的比例达到10%的Reads；</p>
+                            <p>Step 6：剪切掉超过40%的碱基质量值低于15的Reads；</p>
+                            <p>Step 7：舍弃去除Adapter及质量修剪后长度小于30 bp的Reads。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

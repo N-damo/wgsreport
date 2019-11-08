@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>layui</title>
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <link rel='stylesheet' type='text/css' href="../../css/style.css" />
+  <script src='../../js/lianlin.js'></script>
+</head>
+<body class="layui-form" style="background-color:#eee;padding: 20px;">
+    <div class="layui-fluid">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-xs12">
+                    
+                    <h1>CNV变异统计</h1>
+                    <p>
+                        拷贝数变异（CNV）由基因组重排导致，一般指长度1kb以上的基因组大片段拷贝数增加或者减少，主要表现为亚显微水平的缺失和重复，会影响到基因组的稳定性、基因的功能。
+                    </p>
+
+                </div>
+                <div class="layui-col-xs12">
+                    
+                    <h3>分析软件</h3>
+                    <p>分析软件：Delly</p>
+
+                </div>
+                <div class="layui-col-xs12">
+                    <div class="layui-tab">
+                        
+                        <ul class="layui-tab-title">
+                            <li>CNV数据统计</li><li>CNV长度分布</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div id="CNV数据统计" class="layui-tab-item layui-show">
+                                <table class="layui-table" lay-filter="demo">
+                                    <thead>
+                                        <tr>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:"TotalDEL"}>TotalDEL</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:"TotalDUP"}>TotalDUP</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:"Overlapped_gene"}>Overlapped_gene</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">1KB_DEL"}>>1KB_DEL</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">5KB_DEL"}>>5KB_DEL</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">10KB_DEL"}>>10KB_DEL</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">100KB_DEL"}>>100KB_DEL</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">1000KB_DEL"}>>1000KB_DEL</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">1KB_DUP"}>>1KB_DUP</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">5KB_DUP"}>>5KB_DUP</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">10KB_DUP"}>>10KB_DUP</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">100KB_DUP"}>>100KB_DUP</th>
+                                        
+                                        <th lay-data={align:"center",width:150,sort:true,field:">1000KB_DUP"}>>1000KB_DUP</th>
+                                        
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                        <tr>
+                                        <td>Y87646049</td>
+                                        
+                                        <td>349</td>
+                                        
+                                        <td>40</td>
+                                        
+                                        <td>195</td>
+                                        
+                                        <td>349</td>
+                                        
+                                        <td>91</td>
+                                        
+                                        <td>28</td>
+                                        
+                                        <td>4</td>
+                                        
+                                        <td>0</td>
+                                        
+                                        <td>40</td>
+                                        
+                                        <td>22</td>
+                                        
+                                        <td>15</td>
+                                        
+                                        <td>5</td>
+                                        
+                                        <td>0</td>
+                                        
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="CNV长度分布" class="layui-tab-item ">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs12">
+                                        <form >
+                                            <select id='sample_selected' lay-filter='cnv'>
+                                                
+                                                <option value=Y87646049 name=Y87646049 selected>Y87646049</option>
+                                                
+                                            </select> 
+                                        </form>   
+                                        
+                                        <div class="layui-row layui-col-space20">                                        
+                                            <div id='cnv-Y87646049' class='cnv-quater'>
+                                                <div class="layui-col-xs12" >
+                                                    <label>Y87646049 CNV长度小提琴图：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../5.CNV/Y87646049/CNV_distribution.png"/>
+                                                </div>  
+                                                 
+                                            </div>                                   
+                                        </div>                                                   
+                                          
+                                        <div>
+                                                <p>注： 横坐标表示Deletion/Duplication类型；纵坐标表示CNV的长度。</p>
+                                            </div>
+                                    </div>
+                                     
+                                </div>
+                            </div>                 
+                        </div>
+
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+    
+<script>
+table_function;
+cnv_function();
+</script>
+
+</body>
+</html>

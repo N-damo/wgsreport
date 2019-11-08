@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<!--代码由www.magicalcoder.com可视化布局器拖拽生成-->
+<head>
+  <meta charset="UTF-8">
+  <title>layui</title>
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <link rel='stylesheet' type='text/css' href="css/style.css" />
+</head>
+<body class="layui-form" style="background-color:#eee;padding: 20px;">
+    <div class="layui-fluid">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-xs12">
+                    <h1>变异位点功能注释</h1>
+                    <p>
+                        利用ANNOVAR软件对短变异位点的功能进行预测，功能则包括3‘/5‘ UTR变异、基因间区、剪切位点变异、同义/错义突变、起始/终止密码子突变等。
+                    </p>
+                </div>
+                <div class="layui-col-xs12">
+                    <h3>分析软件</h3>
+                    <p>分析软件：ANNOVAR</p>
+                </div>
+                <div class="layui-col-xs12">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <li class="magicalcoder-tab-title layui-this">变异位点功能信息统计</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div id="变异位点功能信息统计" class="layui-tab-item layui-show">
+                                <table class="layui-table" lay-filter="demo">
+                                    <thead>
+                                        <tr>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"synonymous"}>synonymous</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonsynonymous"}>nonsynonymous</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"stopgain"}>stopgain</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"stoploss"}>stoploss</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"frameshift_insertion"}>frameshift_insertion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"frameshift_deletion"}>frameshift_deletion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"frameshift_block_substitution"}>frameshift_block_substitution</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonframeshift_insertion"}>nonframeshift_insertion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonframeshift_deletion"}>nonframeshift_deletion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonframeshift_block_substitution"}>nonframeshift_block_substitution</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"ExonicFunc_Unknown"}>ExonicFunc_Unknown</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for variant in variant_stat %}
+                                        <tr>
+                                        <td>{{ variant.synonymous }}</td>
+                                        <td>{{ variant.nonsynonymous }}</td>
+                                        <td>{{ variant.stopgain }}</td>
+                                        <td>{{ variant.stoploss }}</td>
+                                        <td>{{ variant.frameshift_insertion }}</td>
+                                        <td>{{ variant.frameshift_deletion }}</td>
+                                        <td>{{ variant.frameshift_block_substitution }}</td>
+                                        <td>{{ variant.nonframeshift_insertion }}</td>
+                                        <td>{{ variant.nonframeshift_deletion }}</td>
+                                        <td>{{ variant.nonframeshift_block_substitution }}</td>
+                                        <td>{{ variant.ExonicFunc_Unknown }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        table.init('demo', {
+         page:true,
+         limits:10,
+         toolbar:true,
+        cellMinWidth: 50,
+       height: 315 //设置高度
+        //注意：请务必确保 limit 参数（默认：10）是与你服务端限定的数据条数一致
+       //支持所有基础参数
+     });
+    </script>
+    <script>
+        var $ = layui.jquery, laytpl = layui.laytpl, laydate = layui.laydate, form = layui.form, layedit = layui.layedit, slider = layui.slider, element = layui.element, colorpicker = layui.colorpicker, upload = layui.upload, rate = layui.rate, carousel = layui.carousel, table = layui.table, flow = layui.flow;
+var magicalDragLayuiUtil = {
+    rebuildLayUiControls: function () {
+        var _t = this;
+        //日期
+        $(".magicalcoder-laydate").each(function (idx, item) {
+            laydate.render(_t.iteratorAttr({
+                elem: item
+            }, item));
+        })
+        //富文本
+        $(".magicalcoder-layedit").each(function (idx, item) {
+            var mcDataId = $(item).attr("id");
+            if (mcDataId) {
+                layedit.build(mcDataId, {
+                    height: 300
+                });
+            }
+        })
+        //外键
+        $(".magicalcoder-foreign-select2").each(function (idx, item) {
+            var mcDataId = $(item).attr("id");
+            if (mcDataId) {
+                $("#" + mcDataId).select2({
+                    allowClear: true,
+                    width: "150px",
+                    delay: 500,
+                });
+            }
+        })
+        //颜色选择器
+        $(".magicalcoder-color-picker").each(function (idx, item) {
+            colorpicker.render(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //上传组件
+        $(".magicalcoder-layupload").each(function (idx, item) {
+            upload.render(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //滑块
+        $(".magicalcoder-slider").each(function (idx, item) {
+            slider.render(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //评分
+        $(".magicalcoder-rate").each(function (idx, item) {
+            rate.render(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //轮播
+        $(".layui-carousel").each(function (idx, item) {
+            carousel.render(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //流加载
+        $(".magicalcoder-flow").each(function (idx, item) {
+            flow.load(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //代码
+        $(".magicalcoder-code").each(function (idx, item) {
+            layui.code(_t.iteratorAttr({
+                elem: $(item)}, item));
+        })
+        //弹窗
+        $(".magicalcoder-layer").each(function (idx, item) {
+            //先隐藏起来
+            $(this).next().hide();
+            $(this).click(function () {
+                var config = _t.iteratorAttr({
+                    elem: $(item)}, item);
+                var type = config.type;
+                if (type + '' == 1) {
+                    config.content = $(this).next();
+                }
+                if (config.btn) {
+                    config.btn = config.btn.split(",")
+                }
+                if (config.area) {
+                    config.area = config.area.split(",")
+                }
+                layer.open(config)
+            })
+        })
+        //动态表格 我们单独封装了layui-table的初始化方式 至于数据排序 返回格式 等操作请根据你的具体环境自行封装
+        $(".magicalcoder-table").each(function (idx,
+            item) {
+            var cols = [];
+            //读取列配置
+            $(this).find(".magicalcoder-table-th").each(function (i, th) {
+                cols.push(_t.iteratorAttr({
+                    title: $(this).text()}, th));
+            })
+            var tableConfig = _t.iteratorAttr({
+                elem: $(item),
+                cols: [cols]},
+                item);
+            //此时可以删除辅助列了,删除辅助孩子 在正式发布环境打开此行 布局器暂时不打开
+            // $(this).html('');//清空magicalcoder-table-th
+            //初始化表格 至于返回的数据格式 您可以根据自己的系统自行改造 这里仅做一个示例 参考js\\data\\list.json
+            table.render(tableConfig);
+        })
+        //部分组件初始化
+        element.init();
+        //表单初始化
+        form.render();
+    },
+    //将标签上的属性 转换成layui函数初始化时的参数名:参数值
+    iteratorAttr: function (renderConfig, dom) {
+        var attrs = dom.attributes;
+        for (var i = 0; i < attrs.length; i++) {
+            var attr = attrs[i];
+            var name = attr.name;
+            var value = attr.value;
+            if (name.indexOf("mc-") === 0) {
+                name = name.replace("mc-attr-", '');
+                name = name.replace("mc-event-", '');
+                if (name.indexOf('str-') === 0) {
+                    name = name.replace('str-', '');
+                } else if (name.indexOf('bool-') === 0) {
+                    name = name.replace('bool-', '');
+                    value == 'true' || value === '' ? value = true: value = value;
+                    value == 'false' ? value = false: value = value;
+                } else if (name.indexOf('num-') === 0) {
+                    name = name.replace('num-', '');
+                    if (value !== '' && !isNaN(value)) {
+                        value = parseFloat(value);
+                    }
+                } else if (name.indexOf('json-') === 0) {
+                    name = name.replace('json-', '');
+                    if (value !== '') {
+                        value = JSON.parse(value);
+                    }
+                }
+                renderConfig[this.htmlAttrNameToTuoFeng(name)] = value;
+            }
+        }
+        return renderConfig;
+    },
+    //user-name -> userName html上的标签名转换成驼峰名称
+    htmlAttrNameToTuoFeng: function (name) {
+        var arr = name.split("-");
+        var newArr = []
+        for (var i = 0; i < arr.length; i++) {
+            if (i != 0) {
+                if (arr[i] != '') {
+                    newArr.push(this.firstCharToUpLower(arr[i]));
+                }
+            } else {
+                newArr.push(arr[i]);
+            }
+        }
+        return newArr.join('');
+    },
+    //首字母大写
+    firstCharToUpLower: function (name) {
+        var arr = name.split("");
+        arr[0] = arr[0].toUpperCase();
+        return arr.join('');
+    },
+    //初始化图表 如果您未使用echarts可以删除此方法
+    renderEcharts: function () {
+        // 基于准备好的dom，初始化echarts实例
+        var echartsBars = document.getElementsByClassName('echarts-bar');
+        if (echartsBars && echartsBars.length > 0) {
+            for (var i = 0; i < echartsBars.length; i++) {
+                var myChart = echarts.init(echartsBars[i]);
+                // 指定图表的配置项和数据
+                var option = {
+                    title: {
+                        text: '集成ECharts 入门示例'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data: ['销量']
+                    },
+                    xAxis: {
+                        data: ["衬衫",
+                            "羊毛衫",
+                            "雪纺衫",
+                            "裤子",
+                            "高跟鞋",
+                            "袜子"]
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: [5,
+                            20,
+                            36,
+                            10,
+                            10,
+                            20]
+                    }]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+        }
+    }
+}
+magicalDragLayuiUtil.rebuildLayUiControls();
+magicalDragLayuiUtil.renderEcharts();
+    </script>
+</body>
+</html>

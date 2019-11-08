@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<head>
+    
+  <meta charset="UTF-8">
+  <title>layui</title>
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <link rel='stylesheet' type='text/css' href="../../css/style.css" />
+  <script src='../../js/lianlin.js'></script>
+  
+
+
+
+</head>
+<body class="layui-form" style="background-color:#eee;padding: 20px;">
+    <div class="layui-fluid">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-xs12" >
+                    
+                    <h1>项目背景</h1><p>
+                        国脉生物云平台的变异检测（SNP和InDel）完全参考GATK最佳实践（Best Practise）
+                        所建议的设计流程，提高了效率，加快了速度。在测序数据（Raw Data）质控完成后，过滤低质量的数据，
+                        获得高质量的数据（Clean Data）。首先，利用BWA软件（Li et al., 2009）将测序数据比对到已发表的参考基因组序列上；
+                        其次，利用SAMtools(Li et al., 2009）软件进行Duplication序列的删除；第三，利用GATK软件（McKenna et al., 2010）
+                        的Haplotyper算法分析每个样品和参考基因组之间的基因型差异；第四，将不同样品的分析进行合并和整合，得到样品之间的差异数据；
+                        最后，利用SnpEff（P Cingolani et al., 2012）软件进行功能注释。用Delly软件（Rausch et al., 2012）和CNVnator软件
+                        （Abyzov et al., 2011）分别对样品的SV和CNV变异进行检测。
+                    </p>
+                    
+                    
+                </div>
+                
+                <div class="layui-col-xs12" id='main_background'>
+                    <div class="layui-row">
+                        <div class="layui-col-xs12">
+                            <h1 >分析软件介绍</h1>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p class='title' width='50%'>
+                                BWA：<a href="http://bio-bwa.sourceforge.net/bwa.shtml">http://bio-bwa.sourceforge.net/bwa.shtml</a>
+                            </p>
+                            <p>
+                                BWA是一个软件包，用于将测序数据与大型参考基因组（如人类基因组）进行比对。它由三种算法组成：BWA-backtrack，BWA-SW和BWA-MEM。第一种算法是为较早Illumina序列读取设计的，最长可达100 bp，而其余两个序列的长度则从70 bp到1 Mb不等。
+                                BWA-MEM和BWA-SW具有类似的功能，例如支持长读长和拆分对齐，最新的BWA-MEM由于更快更准确是最常用的使用方法。
+                            </p>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p class='title'>
+                                GATK：<a href="https://software.broadinstitute.org/gatk/">https://software.broadinstitute.org/gatk/</a>
+                            </p>
+                            <p>
+                                由隶属麻省理工学院和哈佛大学的博德研究所（Broad Institute）发布的基因组分析工具箱GATK（Genome Analysis Toolkit），是目前业界领先的基因组变异检测工具包。目前世界上已有超过45000个学术和商业用户使用GATK分析过上百万个项目，在SNP识 别、DNA插入或缺失标记、RNA序列数据领域，GATK已成为业界标准。为提升分析工具的性能，GATK4拓展了分析范围，加入了拷贝数和结构变异分 析，
+                                这将有助于生殖与体细胞的研究应用。
+                            </p>
+                  
+                            <img class='middle_img' src="../../img/gatk.png" />
+              
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p class='title'>
+                                Samtools：<a href="http://www.htslib.org/">http://www.htslib.org/</a>
+                            </p>
+                            <p>
+                                SAMtools提供了各种实用程序来处理SAM格式的对齐，包括按位置格式进行排序、合并、索引和对齐。本身SAMtools也是一款较为常用的变异检测分析软件。
+                            </p>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p class='title'>
+                                Delly：<a href="https://github.com/dellytools/delly">https://github.com/dellytools/delly</a>
+                            </p>
+                            <p>
+                                Delly是目前比较流行的一款结构变异（structural variant, SV）检测软件，它使用二代测序（NGS）数据PE配对策略，可以检测样本中SV的位置、基因型（INS, DEL, DUP, INV, BND）、长度和变异数目等信息。
+                            </p>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p class='title'>
+                                CNVnator：<a href="https://github.com/abyzovlab/CNVnator">https://github.com/abyzovlab/CNVnator</a>
+                            </p>
+                            <p>
+                                CNVnator是目前较为流行的CNV分析工具，是通过检测样本在一个参考基因组上Reads的深度分布情况来检测CNV，适用于单样本大的CNV检测。
+                            </p>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <p class='title'>
+                                ANNOVAR：<a href="http://annovar.openbioinformatics.org/en/latest/">http://annovar.openbioinformatics.org/en/latest/</a>
+                            </p>
+                            <p>
+                                ANNOVAR 是基于其基因组位置对突变位点进行注释并预测编码效果。注释的基因组位置包括内含子、非翻译区、上游、下游、剪接位点或基因间区域。可以预测诸如同义或非同义氨基酸替换、起始密码子增加或损失、终止密码子增益或损失或移码突变等编码效应。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-xs12">
+                    <h1>参考文献</h1><ul>
+                        <li>1.Li H, Durbin R. Fast and accurate short read alignment with Burrows–Wheeler transform[J]. Bioinformatics, 2009, 25(14): 1754-1760.</li><li>2.McKenna A, Hanna M, Banks E, et al. The Genome Analysis Toolkit: a MapReduce framework for analyzing next-generation DNA sequencing data[J]. Genome research, 2010, 20(9): 1297-1303.</li><li>3.Li H, Handsaker B, Wysoker A, et al. The sequence alignment/map format and SAMtools[J]. Bioinformatics, 2009, 25(16): 2078-2079.</li><li>4.Rausch T, Zichner T, Schlattl A, et al. DELLY: structural variant discovery by integrated paired-end and split-read analysis [J]. Bioinformatics, 2012, 28(18):i333.</li><li>5.Abyzov A, Urban A E, Snyder M, et al. CNVnator: an approach to discover, genotype, and characterize typical and atypical CNVs from family and population genome sequencing[J]. Genome research, 2011, 21(6): 974-984.</li><li>6.Cingolani P, Platts A, Wang L L, et al. A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w1118; iso-2; iso-3[J]. Fly, 2012, 6(2): 80-92.</li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>

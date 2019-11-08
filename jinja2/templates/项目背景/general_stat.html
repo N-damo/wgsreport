@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="UTF-8">
+  <title>layui</title>
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+  <link rel='stylesheet' type='text/css' href="../../css/style.css" />
+</head>
+<body class="layui-form" style="background-color:#eee;padding: 20px;">
+    <div class="layui-fluid">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-xs12">
+                    <h1>结果概述</h1><p>
+                        此页面是对本项目相关步骤与分析结果的总结性陈述。
+                    </p>
+                </div>
+                <div class="layui-col-xs12">
+                    <div class="layui-row layui-col-space20">
+                        <div class="layui-col-xs12">
+                            <div class="layui-row">
+                                <div class="layui-col-md6 layui-col-lg1">
+                                    <p>
+                                        数据质量
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-xs12">
+                                    <p>
+                                        本次测序共获得 ( {{clean_data}} ) Clean Data，平均每个样品获得 ( {{avg_clean_data}} ) Clean Data，
+
+                                        Q30平均值达到 ( {{q30_percent}} ) 。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <div class="layui-row">
+                                <div class="layui-col-md6 layui-col-lg1">
+                                    <p>
+                                        比对信息
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-xs12">
+                                    <p>
+                                        样品与参考基因组平均比对效率为 ( {{avg_mapping_rate}} ) ，
+
+                                        平均覆盖深度为 ( {{avg_mapping_depth}}) ，基因组覆盖度为 ( {{coverage}} ) （至少一个碱基覆盖）。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-col-xs12">
+                            <div class="layui-row">
+                                <div class="layui-col-md6 layui-col-lg1">
+                                    <p>
+                                        变异检测
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="layui-row">
+                                <div class="layui-col-xs12">
+                                    <p>
+                                        平均每个样本获得 ( {{avg_snp_number}} ) SNP，( {{avg_indel_number}} ) InDel ， ({{avg_cnv_number}}) CNV 。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+{% extends '测序数据质控/qc.html'%}
+{%block background%}
+                    <h1>标记位点染色体分布</h1>
+                    <p>
+                        对所有的标记信息进行分类统计，依染色体顺序，绘制标记在基因组上的密度分布情况。
+                    </p>
+{%endblock%}
+{%block parameter%}
+                    <h3>分析软件</h3>
+                    <p>分析软件：pysam+bedtools</p>
+{%endblock%}
+              
+{%block tab%}
+                        <ul class="layui-tab-title">
+                            <li>标记位点染色体分布</li><li>Circos圈图展示</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div id="标记位点染色体分布" class="layui-tab-item layui-show">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs12">
+                                        <form >
+                                            <select id='sample_selected' lay-filter='sample_selected'>
+                                                {% for key in dict_sub %}
+                                                <option value={{key}} name={{key}} selected>{{key}}</option>
+                                                {% endfor %}
+                                            </select> 
+                                        </form>   
+                                        {% for key in dict_sub %}
+                                        <div class="layui-row layui-col-space20">                                        
+                                            <div id='marker-{{key}}' class='marker-quater'>
+                                                <div class="layui-col-md6" >
+                                                    <label>{{key}} SNP标记位点染色体分布：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../3.SNP/{{key}}/SNP_marker_density.png"/>
+                                                </div>  
+                                                <div class="layui-col-md6" >
+                                                    <label>{{key}} INDEL标记位点染色体分布：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../4.INDEL/{{key}}/INDEL_marker_density.png"/>
+                                                </div> 
+                                                <div class='layui-col-xs12'>
+                                                    <p>注： 横坐标为22条常染色体和XY性染色体,纵坐标代表染色体窗口(染色体窗口数X窗口大小=染色体大小)，不同色块颜色代表不同normalised标记数量。左右分别为SNP/INDEL标记分布热图</p>
+                                                </div> 
+                                            </div>      
+                                                                          
+                                        </div>                                                   
+                                        {% endfor %}  
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="Circos圈图展示" class="layui-tab-item ">
+                                <div class="layui-row">
+                                    <div class="layui-col-xs12">
+                                        <form >
+                                            <select id='circos' lay-filter='circos'>
+                                                {% for key in dict_sub %}
+                                                <option value={{key}} name={{key}} selected>{{key}}</option>
+                                                {% endfor %}
+                                            </select> 
+                                        </form>   
+                                        {% for key in dict_sub %}
+                                        <div class="layui-row layui-col-space20">                                        
+                                            <div id='circos-{{key}}' class='circos-quater'>
+                                                <div class="layui-col-md6" >
+                                                    <label>{{key}} SNP标记位点染色体分布：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../3.SNP/{{key}}/SNP_marker_density.png"/>
+                                                </div>  
+                                                <div class="layui-col-md6" >
+                                                    <label>{{key}} INDEL标记位点染色体分布：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../4.INDEL/{{key}}/INDEL_marker_density.png"/>
+                                                </div> 
+                                                <div class='layui-col-xs12'>
+                                                    <p>注： 横坐标为22条常染色体和XY性染色体,纵坐标代表染色体窗口(染色体窗口数X窗口大小=染色体大小)，不同色块颜色代表不同normalised标记数量。左右分别为SNP/INDEL标记分布热图</p>
+                                                </div> 
+                                            </div>                                 
+                                        </div>                                                   
+                                        {% endfor %}  
+
+                                    </div>
+                                     
+                                </div>
+                            </div> 
+                        </div>
+
+                        
+{%endblock%}
+{%block js%}
+<script>
+table_function;
+marker_function();
+circos_function();
+</script>
+{%endblock%}
+</body>
+</html>

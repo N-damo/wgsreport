@@ -1,0 +1,184 @@
+{% set sample = sample_list|first %}
+{% extends '测序数据质控/qc.html' %}
+{%block background%}
+<h1>变异位点数据统计</h1>
+<p>
+    统计各样本基因组比对得到短变异（SNP,InDel）的数量、类型、质量参数、标记密度及插入/缺失片段的长度分布等。
+</p>
+{%endblock%}
+{% block parameter %}
+<h3>分析软件</h3>
+<p>分析软件：Sentieon</p>
+{%endblock%}
+
+{%block tab%}
+<ul class="layui-tab-title">
+    <li layui-this">变异位点数据统计</li><li >变异位点质量评估</li><li>变异位点功能信息统计</li>
+</ul>
+<div class="layui-tab-content">
+    <div id="变异位点数据统计" class="layui-tab-item layui-show">
+        <div style='text-align: center;'>
+            <form class="layui-input-block">
+                <input type="radio" value="snp" name="variant" lay-filter='variant_stat' title='SNP' checked>
+                <input type="radio" value="indel" name="variant" lay-filter='variant_stat' title='INDEL'>
+            </form>
+        </div>
+        <div id='snp'>
+            <table class="layui-table" lay-filter="demo">
+                <thead>
+                    <tr>
+                    <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                    {%for col in snp_dict_sub[sample]%}
+                    <th lay-data={align:"center",width:150,sort:true,field:"{{col[0]}}"}>{{col[0]}}</th>
+                    {%endfor%}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key in snp_dict_sub %}
+                    <tr>
+                    <td>{{ key }}</td>
+                    {%for col in snp_dict_sub[key]%}
+                    <td>{{ col[1] }}</td>
+                        {%endfor%}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id='indel'>
+            <table class="layui-table" lay-filter="demo">
+                <thead>
+                    <tr>
+                    <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                    {%for col in indel_dict_sub[sample]%}
+                    <th lay-data={align:"center",width:150,sort:true,field:"{{col[0]}}"}>{{col[0]}}</th>
+                    {%endfor%}
+                    </tr>
+                </thead>
+                <tbody>
+                        {% for key in indel_dict_sub %}
+                        <tr>
+                        <td>{{ key }}</td>
+                        {%for col in indel_dict_sub[key]%}
+                        <td>{{ col[1] }}</td>
+                            {%endfor%}
+                        </tr>
+                        {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="变异位点质量评估" class="layui-tab-item ">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='sample' lay-filter='sample' >
+                        {% for key in snp_dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                    </select> 
+                    <div id='variant_select'>
+                        <input type="radio" value="snp" name='variant' lay-filter='variant_qualitycheck' title='SNP' checked>
+                        <input type="radio" value="indel" name='variant' lay-filter='variant_qualitycheck' title='INDEL'>
+                    </div>
+                </form>  
+            </div>
+        </div>
+        {% for key in snp_dict_sub %}
+        <div class="layui-row layui-col-space20">                                        
+            <div id='snp-{{key}}' class='snp-quater'>
+                <div class="layui-col-md6" >
+                    <label>{{key}} SNP变异位点质量分布图：</label>
+                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../3.SNP/{{key}}/depth_acumulative.png"/>
+                    <p>注：横坐标是对应SNP/InDel分型累计质量分布值（变异检测结果的可靠度）；纵坐标是某一质量值以下所有SNP/InDel所占百分比。</p>
+                </div>
+                <div class="layui-col-md6" >
+                    <label>{{key}} SNP变异位点深度分布图：</label>
+                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../3.SNP/{{key}}/quality_acumulative.png"/>
+                    <p>注：横坐标是对应SNP/InDel标记的覆盖深度；纵坐标是某一深度以下所有SNP/InDel所占百分比。</p>
+                </div>
+            </div>                                   
+        </div>                                                   
+        {% endfor %}
+        {% for key in indel_dict_sub %}
+        <div class="layui-row layui-col-space20">                                        
+            <div id='indel-{{key}}' class='indel-quater'>
+                <div class="layui-col-md6" >
+                    <label>{{key}} INDEL变异位点质量分布图：</label>
+                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../4.INDEL/{{key}}/depth_acumulative.png"/>
+                    <p>注：横坐标是对应SNP/InDel分型累计质量分布值（变异检测结果的可靠度）；纵坐标是某一质量值以下所有SNP/InDel所占百分比。</p>
+                </div>
+                <div class="layui-col-md6" >
+                    <label>{{key}} INDEL变异位点深度分布图：</label>
+                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../4.INDEL/{{key}}/quality_acumulative.png"/>
+                    <p>注：横坐标是对应SNP/InDel标记的覆盖深度；纵坐标是某一深度以下所有SNP/InDel所占百分比。</p>
+                </div>
+            </div>                                   
+        </div>                                                   
+        {% endfor %}
+    </div>                 
+    <div id="变异位点功能信息统计" class="layui-tab-item">
+        <div id='variant_select'>
+            <input type="radio" value="snp" name='variant' lay-filter='variant_check' title='SNP' checked>
+            <input type="radio" value="indel" name='variant' lay-filter='variant_check' title='INDEL'>
+        </div>
+        <div id='snp_func'>
+            <label>SNP Function</label>
+            <table class="layui-table" lay-filter="demo">
+                <thead>
+                    <tr>
+                    <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                    
+                    {%for col in snp_annotation_func[sample] %}
+                    <th lay-data={align:"center",width:150,sort:true,field:'{{col[0]}}'}>{{col[0]}}</th>
+                    {%endfor%}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key in snp_annotation_func %}
+                    <tr>
+                    <td>{{ key }}</td>
+                        {%for col in snp_annotation_func[key]%}
+                        <td>{{ col[1] }}</td>
+                        {%endfor%}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div id='indel_func'>
+            <label>INDEL Function</label>
+            <table class="layui-table" lay-filter="demo">
+                <thead>
+                    <tr>
+                    <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                    {%for col in indel_annotation_func[sample] %}
+                    <th lay-data={align:"center",width:150,sort:true,field:'{{col[0]}}'}>{{col[0]}}</th>
+                    {%endfor%}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key in indel_annotation_func %}
+                    <tr>
+                    <td>{{ key }}</td>
+                        {%for col in indel_annotation_func[key]%}
+                        <td>{{ col[1] }}</td>
+                        {%endfor%}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block js%}
+<script>
+    table_function();
+    shortvariant_stat();
+    shortvariant_quality();
+    shortvariant_func();
+</script>
+{%endblock%}
+</body>
+</html>

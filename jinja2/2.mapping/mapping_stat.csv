@@ -1,0 +1,3 @@
+Samples,Library_size,InsertSize_mean(bp),Insert_std(bp),Mapped_rate(%),Pcr_duplication(%),Unmerged_reads,Merged_reads,MEAN_COVERAGE(X),MEDIAN_COVERAGE(X),Coverage_at_least_1X(%),Coverage_at_least_5X(%),Coverage_at_least_10X(%),Coverage_at_least_20X(%),Coverage_at_least_30X(%)
+P001190115001,224193995,335.92296,118.545468,0.9986,0.104635,2397274,42944105,3.514926,3,0.906528,0.29776,0.020333,0.000625,0.000281
+P002190812015,108351919,342.782283,85.382105,0.9987,0.198077,37446,46231299,3.968805,4,0.915377,0.374097,0.034359,0.000553,0.000236

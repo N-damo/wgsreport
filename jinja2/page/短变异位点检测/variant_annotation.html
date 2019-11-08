@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--代码由www.magicalcoder.com可视化布局器拖拽生成-->
+<head>
+  <meta charset="UTF-8">
+  <title>layui</title>
+  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+  <link rel='stylesheet' type='text/css' href="css/style.css" />
+</head>
+<body class="layui-form" style="background-color:#eee;padding: 20px;">
+    <div class="layui-fluid">
+        <div class="layui-container">
+            <div class="layui-row layui-col-space20">
+                <div class="layui-col-xs12">
+                    <h1>变异位点功能注释</h1>
+                    <p>
+                        利用ANNOVAR软件对短变异位点的功能进行预测，功能则包括3‘/5‘ UTR变异、基因间区、剪切位点变异、同义/错义突变、起始/终止密码子突变等。
+                    </p>
+                </div>
+                <div class="layui-col-xs12">
+                    <h3>分析软件</h3>
+                    <p>分析软件：ANNOVAR</p>
+                </div>
+                <div class="layui-col-xs12">
+                    <div class="layui-tab">
+                        <ul class="layui-tab-title">
+                            <li class="magicalcoder-tab-title layui-this">变异位点功能信息统计</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div id="变异位点功能信息统计" class="layui-tab-item layui-show">
+                                <table class="layui-table" lay-filter="demo">
+                                    <thead>
+                                        <tr>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"synonymous"}>synonymous</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonsynonymous"}>nonsynonymous</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"stopgain"}>stopgain</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"stoploss"}>stoploss</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"frameshift_insertion"}>frameshift_insertion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"frameshift_deletion"}>frameshift_deletion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"frameshift_block_substitution"}>frameshift_block_substitution</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonframeshift_insertion"}>nonframeshift_insertion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonframeshift_deletion"}>nonframeshift_deletion</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"nonframeshift_block_substitution"}>nonframeshift_block_substitution</th>
+                                        <th lay-data={align:"center",width:150,sort:true,field:"ExonicFunc_Unknown"}>ExonicFunc_Unknown</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    table_function();
+    </script>
+</body>
+</html>
