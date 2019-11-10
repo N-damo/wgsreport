@@ -124,7 +124,7 @@
         </ul>
         
         <div class="main dynamic-navigation">
-            <button class="layui-btn layui-btn-primary"><i class="layui-icon" id='left_icon'>&#xe668;</i></button>
+            <button class="layui-btn layui-btn-primary" id="left"><i class="layui-icon layui-icon-shrink-right" id="left_icon"></i></button>
             <div id="view1">
                 <div class="layui-row layui-col-space20">
                     <div class="layui-col-xs12">
@@ -139,13 +139,22 @@
        
         </div>
         
+<script>
+var form=layui.form, $=layui.jquery;
+form.render();
+$('#left').click(function(){
+    $(this).children(".layui-icon").toggleClass("layui-icon-spread-left");
+    $(this).children(".layui-icon").toggleClass("layui-icon-shrink-right");
 
+
+})
+</script>
     <script type="text/javascript">
         layui.use(['element', 'layer'], () => {
             var element = layui.element,$=layui.jquery;
             element.init();
-            
             $('body').on('click', '.main>button', () => {
+                
                 var a = $('.dynamic-navigation');
                 var b = $('.layui-layer-tips');
                 a && (a.attr("tg") ? (a.animate({
