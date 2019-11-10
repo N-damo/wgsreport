@@ -1,5 +1,7 @@
 
 
+
+
 function table_function(){
     var table=layui.table;
     table.init('demo', {height: 500, limit: 10,toolbar:true,page:true,limit:10,defaultToolbar:['filter','exports'],});
@@ -165,7 +167,7 @@ function cnv_function(){
     $('#cnv-'+sample).show();
     form.on('select(cnv)',function(data){
         $('.cnv-quater').hide();
-        $('#cnv-'+data.value()).show();
+        $('#cnv-'+data.value).show();
     })
 }
 

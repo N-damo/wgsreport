@@ -31,7 +31,7 @@ class HTML(object):
             content = env.render(self.dict_sub)
         else:
             content = env.render()
-        static_file = open(self.prefix, 'wt').write(content)
+        static_file = open(self.prefix, 'wt',encoding='utf-8').write(content)
 
     def dir_test(self):
         if os.path.exists('page'):
