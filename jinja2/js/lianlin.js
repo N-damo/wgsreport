@@ -1,4 +1,8 @@
+function icon_append(){
+    var $=layui.jquery;
+    $('h1').prepend('<i class="layui-icon layui-icon-snowflake" style="font-size:30px;margin-right:15px;color:skyblue"></i>');
 
+}
 
 
 

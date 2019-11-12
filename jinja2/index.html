@@ -1,111 +1,200 @@
-<!DOCTYPE html>
-<head>
-  <meta charset="UTF-8">
-  <title>wgs</title>
-  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
-  <script src="https://lib.baomitu.com/json3/3.3.3/json3.min.js"></script>
-  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
-  <script src="https://lib.baomitu.com/echarts/4.2.1/echarts.min.js"></script>
 
-</head>
-<body class="layui-form" style="background-color:#eee;padding: 20px;">
-    <div class="layui-fluid">
-        <div class="layui-container" style="width: 90%;">
-            <div class="layui-row">
-                <div class="layui-col-md6 layui-col-lg3">
-                    <img style="width:50%;margin-bottom: 25px" src="img/logo.png" />
-                </div>
-                <div class="layui-col-md6 layui-col-lg9">
-                    <a class="layui-btn" style="float: right;" href='mailto:guomaigene@gmiot.com'>report</a>
-                </div>
-            </div>
-            <div class="layui-row layui-col-space20">
-                <div class="layui-col-md6 layui-col-lg2">
-                    <div class="layui-collapse" lay-accordion>
-                        <div class="layui-colla-item" >
-                            <h2 class="layui-colla-title"><a href="page/项目背景/background.html" target="myFrame">项目背景</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/项目背景/general_stat.html" target="myFrame">结果概述</a>
-                                </p>
-                                <p>
-                                    <a href="page/项目背景/sample_info.html" target="myFrame">样本信息</a>
-                                </p>
-                                <p>
-                                    <a href="page/项目背景/software_used.html" target="myFrame">软件列表</a>
-                                </p>
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+        <title>wgs</title>
+        <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
+        <script src="https://lib.baomitu.com/json3/3.3.3/json3.min.js"></script>
+        <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
+        <script src="https://lib.baomitu.com/echarts/4.2.1/echarts.min.js"></script>
+        <link rel="stylesheet" type="text/css" src='css/style.css' />
+	
+		<style type="text/css">
+			ul{bottom: 0; top: 0;}
+			.main{margin-left: 200px; position: absolute; right: 0; left: 0;}
+			.main #view1{width: 80%; position: fixed}
+			.main > button{margin-left: 0px; margin-top: 20px;}
+			.layui-layer-tips .layui-layer-content{
+				background-color: transparent;
+            }
+            .layui-icon{margin-right: 15px;color:skyblue;font-size: 15px}
+			
+        </style>
+        
+		<script type="text/javascript">
+			//为了保证不出现一闪而过的菜单栏, 放在了前面进行加载这段代码
+			$().ready(() => {
+				var a = $('.dynamic-navigation');			
+				localStorage.getItem('nav-status') == 1 ? (
+					$('.dynamic-navigation').attr("tg", "1").css('left', '-200px'),
+					$('.layui-layer-tips').css('left', '89px')
+				) : (
+					console.log(localStorage.getItem('nav-status'))
+				);
+				
+			});
+		</script>
+	</head>
+
+<body class="layui-form" style="background-color:#eee">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md6 layui-col-lg3">
+            <img style="width:200px;margin-top:20px;margin-bottom: 100px;position:fixed" src="img/logo.png" />
+        </div>
+        <div class="layui-col-md6 layui-col-lg9">
+            <a class="layui-btn" style="float: right;margin-top:20px;margin-bottom: 100px;" href='mailto:guomaigene@gmiot.com'>report</a>
+        </div>
+        <div class="layui-col-xs12">
+            <ul lay-shrink='all' class="layui-nav layui-nav-tree layui-nav-side dynamic-navigation" lay-filter="test" style="position: fixed;margin-top:100px;height:100% " >
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="page/项目背景/background.html" target="myFrame"><i class="layui-icon layui-icon-home" ></i>项目背景</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/项目背景/general_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>结果概述</a>
+                        </dd>
+                        <dd>
+                            <a href="page/项目背景/sample_info.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>样本信息</a>
+                        </dd>
+                        <dd>
+                            <a href="page/项目背景/software_used.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>软件列表</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/测序数据质控/background.html" target="myFrame"><i class="layui-icon layui-icon-diamond" ></i>测序数据质控</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/测序数据质控/qc.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>测序数据质控</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/基因组比对/background.html" target="myFrame"><i class="layui-icon layui-icon-component" ></i>基因组比对</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/基因组比对/mapping_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>比对信息统计</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/短变异位点检测/background.html" target="myFrame"><i class="layui-icon layui-icon-table" ></i>短变异位点检测</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/短变异位点检测/variant_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>变异位点数据统计</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/SV变异检测/background.html" target="myFrame"><i class="layui-icon layui-icon-chart" ></i>SV变异检测</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/SV变异检测/sv_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>SV变异统计</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/CNV变异检测/background.html" target="myFrame"><i class="layui-icon layui-icon-chart-screen" ></i>CNV变异检测</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/CNV变异检测/cnv_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>CNV变异统计</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/SSR标记分析/background.html" target="myFrame"><i class="layui-icon layui-icon-tree" ></i>SSR标记分析</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/SSR标记分析/ssr_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>SSR标记统计</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/标记分布可视化/background.html" target="myFrame"><i class="layui-icon layui-icon-picture-fine" ></i>标记分布可视化</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/标记分布可视化/marker_stat.html" target="myFrame"><i class="layui-icon layui-icon-note" ></i>标记位点染色体分布</a>
+                        </dd>
+                        <dd>
+                            <a href="page/visualize.html#标记分布Circos全图" target="myFrame"><i class="layui-icon layui-icon-note" ></i>标记分布Circos全图</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="page/annotation.html" target="myFrame"><i class="layui-icon layui-icon-list" ></i>基因功能注释</a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="page/annotation.html#基因功能注释" target="myFrame"><i class="layui-icon layui-icon-note" ></i>基因功能注释</a>
+                        </dd>
+                    </dl>
+                </li>
+            </ul>
+            <div class="layui-fluid">
+            <div class="main dynamic-navigation">
+                <button class="layui-btn layui-btn-primary" id="left"><i class="layui-icon layui-icon-shrink-right" id="left_icon" ></i></button>
+                <div id="view1">
+                    
+                        <div class="layui-row layui-col-space20">
+                            <div class="layui-col-xs12 layui-col-lg12"  style='height:650px;margin-top: -120px;margin-left:50px;'>
+                                <iframe name="myFrame" croling="yes" frameborder="0" width="100%" height="100%"></iframe>
                             </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/测序数据质控/background.html" target="myFrame">测序数据质控</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/测序数据质控/qc.html" target="myFrame">测序数据质控</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/基因组比对/background.html" target="myFrame">基因组比对</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/基因组比对/mapping_stat.html" target="myFrame">比对信息统计</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/短变异位点检测/background.html" target="myFrame">短变异位点检测</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/短变异位点检测/variant_stat.html" target="myFrame">变异位点数据统计</a>
-                                </p>
-                                    
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/SV变异检测/background.html" target="myFrame">SV变异检测</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/SV变异检测/sv_stat.html" target="myFrame">SV变异统计</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/CNV变异检测/background.html" target="myFrame">CNV变异检测</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/CNV变异检测/cnv_stat.html" target="myFrame">CNV变异统计</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/SSR标记分析/background.html" target="myFrame">SSR标记分析</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/SSR标记分析/ssr_stat.html" target="myFrame">SSR标记统计</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/标记分布可视化/background.html" target="myFrame">标记分布可视化</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/标记分布可视化/marker_stat.html" target="myFrame">标记位点染色体分布</a>
-                                </p>
-                                <p>
-                                    <a href="page/visualize.html#标记分布Circos全图" target="myFrame">标记分布Circos全图</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="layui-colla-item">
-                            <h2 class="layui-colla-title"><a href="page/annotation.html" target="myFrame">基因功能注释</a></h2><div class="layui-colla-content">
-                                <p>
-                                    <a href="page/annotation.html#基因功能注释" target="myFrame">基因功能注释</a>
-                                </p>
+                            <div class="layui-col-xs12">
+                                <div class="layui-container" style="width: 30%">国脉生物科技有限公司</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="layui-col-md6 layui-col-lg10" style="height:750px">
-                    <iframe name="myFrame" croling="yes" frameborder="0" width="100%" height="100%"></iframe>
-                </div>
+        
             </div>
         </div>
     </div>
-    <script>
-        var element=layui.element;
-        element.init()
+        
+<script>
+var form=layui.form, $=layui.jquery;
+form.render();
+$('#left').click(function(){
+    $(this).children(".layui-icon").toggleClass("layui-icon-spread-left");
+    $(this).children(".layui-icon").toggleClass("layui-icon-shrink-right");
+
+
+})
+</script>
+    <script type="text/javascript">
+        layui.use(['element', 'layer'], () => {
+            var element = layui.element,$=layui.jquery;
+            element.init();
+            $('body').on('click', '.main>button', () => {
+                
+                var a = $('.dynamic-navigation');
+                var b = $('.layui-layer-tips');
+                a && (a.attr("tg") ? (a.animate({
+                    left: 0,
+                    opacity: "show"
+                }, 500), a.removeAttr("tg"), b.animate({
+                    left: 289,
+                    opacity: "show"
+                }, 500)) : (a.animate({
+                    left: -200,
+                    opacity: "show"
+                }, 500), a.attr("tg", "1"), b.animate({
+                    left: 89,
+                    opacity: "show"
+                }, 500)));
+                
+                //分开写了
+                a && (a.attr("tg") ? (
+                    localStorage.setItem('nav-status', 1)
+                ) : (
+                    localStorage.setItem('nav-status', 0)
+                ));
+                
+            });
+            
+            
+        })
     </script>
+    
 </body>
+	
 </html>
