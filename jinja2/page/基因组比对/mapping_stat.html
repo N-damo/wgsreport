@@ -44,19 +44,13 @@
                     <tr>
                     <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
                     
-                    <th lay-data={align:"center",width:150,sort:true,field:"Library_size"}>Library_size</th>
-                    
                     <th lay-data={align:"center",width:150,sort:true,field:"InsertSize_mean(bp)"}>InsertSize_mean(bp)</th>
                     
                     <th lay-data={align:"center",width:150,sort:true,field:"Insert_std(bp)"}>Insert_std(bp)</th>
                     
                     <th lay-data={align:"center",width:150,sort:true,field:"Mapped_rate(%)"}>Mapped_rate(%)</th>
                     
-                    <th lay-data={align:"center",width:150,sort:true,field:"Pcr_duplication(%)"}>Pcr_duplication(%)</th>
-                    
-                    <th lay-data={align:"center",width:150,sort:true,field:"Unmerged_reads"}>Unmerged_reads</th>
-                    
-                    <th lay-data={align:"center",width:150,sort:true,field:"Merged_reads"}>Merged_reads</th>
+                    <th lay-data={align:"center",width:150,sort:true,field:"PCR_duplication(%)"}>PCR_duplication(%)</th>
                     
                     <th lay-data={align:"center",width:150,sort:true,field:"MEAN_COVERAGE(X)"}>MEAN_COVERAGE(X)</th>
                     
@@ -77,9 +71,34 @@
                 <tbody>
                     
                     <tr>
-                    <td>P001190115001</td>
+                    <td>B002190812002</td>
                     
-                    <td>224193995</td>
+                    <td>304.016367</td>
+                    
+                    <td>105.016081</td>
+                    
+                    <td>0.9998</td>
+                    
+                    <td>0.175087</td>
+                    
+                    <td>31.52075</td>
+                    
+                    <td>33</td>
+                    
+                    <td>0.965247</td>
+                    
+                    <td>0.9573809999999999</td>
+                    
+                    <td>0.9473799999999999</td>
+                    
+                    <td>0.878685</td>
+                    
+                    <td>0.646424</td>
+                    
+                    </tr>
+                    
+                    <tr>
+                    <td>P001190115001</td>
                     
                     <td>335.92296</td>
                     
@@ -88,10 +107,6 @@
                     <td>0.9986</td>
                     
                     <td>0.10463499999999999</td>
-                    
-                    <td>2397274</td>
-                    
-                    <td>42944105</td>
                     
                     <td>3.514926</td>
                     
@@ -110,9 +125,34 @@
                     </tr>
                     
                     <tr>
-                    <td>P002190812015</td>
+                    <td>P002190812002</td>
                     
-                    <td>108351919</td>
+                    <td>304.016367</td>
+                    
+                    <td>105.016081</td>
+                    
+                    <td>0.9998</td>
+                    
+                    <td>0.175087</td>
+                    
+                    <td>31.52075</td>
+                    
+                    <td>33</td>
+                    
+                    <td>0.965247</td>
+                    
+                    <td>0.9573809999999999</td>
+                    
+                    <td>0.9473799999999999</td>
+                    
+                    <td>0.878685</td>
+                    
+                    <td>0.646424</td>
+                    
+                    </tr>
+                    
+                    <tr>
+                    <td>P002190812015</td>
                     
                     <td>342.782283</td>
                     
@@ -121,10 +161,6 @@
                     <td>0.9987</td>
                     
                     <td>0.198077</td>
-                    
-                    <td>37446</td>
-                    
-                    <td>46231299</td>
                     
                     <td>3.968805</td>
                     
@@ -151,7 +187,11 @@
                     <form class="layui-form" >
                         <select id='insert_size' lay-filter='insert_size' >
                             
+                            <option value='B002190812002' name='B002190812002' selected>B002190812002</option>
+                            
                             <option value='P001190115001' name='P001190115001' selected>P001190115001</option>
+                            
+                            <option value='P002190812002' name='P002190812002' selected>P002190812002</option>
                             
                             <option value='P002190812015' name='P002190812015' selected>P002190812015</option>
                             
@@ -161,10 +201,32 @@
             </div>
             
             <div class="layui-row layui-col-space20">                                        
+                <div id='insert_size-B002190812002' class='insert_size-quater'>
+                    <div class="layui-col-xs12" >
+                        <label>B002190812002 插入片段分布图：</label>
+                        <img style="width:50%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block;"  src="../../2.mapping/B002190812002/insert_size.png"/>
+                        <p>注：横坐标表示样品测序文库插入片段大小，纵坐标表示该长度范围所对应的reads数或比例，峰值部分即文库插入片段的中心位置。</p>
+                
+                    </div>  
+                </div>                                 
+            </div>                                                   
+            
+            <div class="layui-row layui-col-space20">                                        
                 <div id='insert_size-P001190115001' class='insert_size-quater'>
                     <div class="layui-col-xs12" >
                         <label>P001190115001 插入片段分布图：</label>
                         <img style="width:50%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block;"  src="../../2.mapping/P001190115001/insert_size.png"/>
+                        <p>注：横坐标表示样品测序文库插入片段大小，纵坐标表示该长度范围所对应的reads数或比例，峰值部分即文库插入片段的中心位置。</p>
+                
+                    </div>  
+                </div>                                 
+            </div>                                                   
+            
+            <div class="layui-row layui-col-space20">                                        
+                <div id='insert_size-P002190812002' class='insert_size-quater'>
+                    <div class="layui-col-xs12" >
+                        <label>P002190812002 插入片段分布图：</label>
+                        <img style="width:50%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block;"  src="../../2.mapping/P002190812002/insert_size.png"/>
                         <p>注：横坐标表示样品测序文库插入片段大小，纵坐标表示该长度范围所对应的reads数或比例，峰值部分即文库插入片段的中心位置。</p>
                 
                     </div>  
@@ -190,7 +252,11 @@
                     <form class="layui-form" >
                         <select id='depth' lay-filter='depth' >
                             
+                            <option value='B002190812002' name='B002190812002' selected>B002190812002</option>
+                            
                             <option value='P001190115001' name='P001190115001' selected>P001190115001</option>
+                            
+                            <option value='P002190812002' name='P002190812002' selected>P002190812002</option>
                             
                             <option value='P002190812015' name='P002190812015' selected>P002190812015</option>
                             
@@ -198,6 +264,21 @@
                     </form>  
                 </div>
             </div>
+            
+            <div class="layui-row layui-col-space20">                                        
+                <div id='depth-B002190812002' class='depth-quater'>
+                    <div class="layui-col-md6" >
+                        <label>B002190812002 测序深度分布图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../2.mapping/B002190812002/depth_distribution.png"/>
+                        <p>注：横坐标表示测序深度，即Reads覆盖度，纵坐标表示某一深度reads序列数，峰值部分即测序数据的平均深度。</p>
+                    </div>
+                    <div class="layui-col-md6" >
+                        <label>B002190812002 测序深度累积分布图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../2.mapping/B002190812002/depth_cumulative.png"/>
+                        <p>注：横坐标表示测序深度，即Reads覆盖度，纵坐标表示大于等于某一深度reads序列总数。</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
             
             <div class="layui-row layui-col-space20">                                        
                 <div id='depth-P001190115001' class='depth-quater'>
@@ -209,6 +290,21 @@
                     <div class="layui-col-md6" >
                         <label>P001190115001 测序深度累积分布图：</label>
                         <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../2.mapping/P001190115001/depth_cumulative.png"/>
+                        <p>注：横坐标表示测序深度，即Reads覆盖度，纵坐标表示大于等于某一深度reads序列总数。</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            
+            <div class="layui-row layui-col-space20">                                        
+                <div id='depth-P002190812002' class='depth-quater'>
+                    <div class="layui-col-md6" >
+                        <label>P002190812002 测序深度分布图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../2.mapping/P002190812002/depth_distribution.png"/>
+                        <p>注：横坐标表示测序深度，即Reads覆盖度，纵坐标表示某一深度reads序列数，峰值部分即测序数据的平均深度。</p>
+                    </div>
+                    <div class="layui-col-md6" >
+                        <label>P002190812002 测序深度累积分布图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px"  src="../../2.mapping/P002190812002/depth_cumulative.png"/>
                         <p>注：横坐标表示测序深度，即Reads覆盖度，纵坐标表示大于等于某一深度reads序列总数。</p>
                     </div>
                 </div>                                   
@@ -237,7 +333,11 @@
                     <form class="layui-form" >
                         <select id='genome' lay-filter='genome' >
                             
+                            <option value='B002190812002' name='B002190812002' selected>B002190812002</option>
+                            
                             <option value='P001190115001' name='P001190115001' selected>P001190115001</option>
+                            
+                            <option value='P002190812002' name='P002190812002' selected>P002190812002</option>
                             
                             <option value='P002190812015' name='P002190812015' selected>P002190812015</option>
                             
@@ -247,10 +347,30 @@
             </div>
             
             <div class="layui-row layui-col-space20">                                        
+                <div id='genome-B002190812002' class='genome-quater'>
+                    <div class="layui-col-xs12" >
+                        <label>B002190812002 基因组覆盖分布图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block"  src="../../2.mapping/B002190812002/genome_cov.png"/>
+                        <p>注：横坐标表示滑窗数（滑窗数×窗口大小=染色体长度）；每一块表示一条染色体；纵坐标为染色体上对应位置的平均覆盖深度取2的对数（Log2）所得到的值。</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            
+            <div class="layui-row layui-col-space20">                                        
                 <div id='genome-P001190115001' class='genome-quater'>
                     <div class="layui-col-xs12" >
                         <label>P001190115001 基因组覆盖分布图：</label>
                         <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block"  src="../../2.mapping/P001190115001/genome_cov.png"/>
+                        <p>注：横坐标表示滑窗数（滑窗数×窗口大小=染色体长度）；每一块表示一条染色体；纵坐标为染色体上对应位置的平均覆盖深度取2的对数（Log2）所得到的值。</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            
+            <div class="layui-row layui-col-space20">                                        
+                <div id='genome-P002190812002' class='genome-quater'>
+                    <div class="layui-col-xs12" >
+                        <label>P002190812002 基因组覆盖分布图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block"  src="../../2.mapping/P002190812002/genome_cov.png"/>
                         <p>注：横坐标表示滑窗数（滑窗数×窗口大小=染色体长度）；每一块表示一条染色体；纵坐标为染色体上对应位置的平均覆盖深度取2的对数（Log2）所得到的值。</p>
                     </div>
                 </div>                                   

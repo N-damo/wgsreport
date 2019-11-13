@@ -84,6 +84,47 @@
                                     <tbody>
                                         
                                         <tr>
+                                        <td>B002190812002</td>
+                                        
+                                        <td>34206308</td>
+                                        
+                                        <td>5130946200</td>
+                                        
+                                        <td>4951084744</td>
+                                        
+                                        <td>4692936193</td>
+                                        
+                                        <td>0.9649459999999999</td>
+                                        
+                                        <td>0.9146340000000001</td>
+                                        
+                                        <td>150</td>
+                                        
+                                        <td>150</td>
+                                        
+                                        <td>0.478058</td>
+                                        
+                                        <td>33644596</td>
+                                        
+                                        <td>4906953533</td>
+                                        
+                                        <td>4764297766</td>
+                                        
+                                        <td>4526350358</td>
+                                        
+                                        <td>0.970928</td>
+                                        
+                                        <td>0.922436</td>
+                                        
+                                        <td>145</td>
+                                        
+                                        <td>145</td>
+                                        
+                                        <td>0.47479799999999994</td>
+                                        
+                                        </tr>
+                                        
+                                        <tr>
                                         <td>P001190115001</td>
                                         
                                         <td>90793522</td>
@@ -121,6 +162,47 @@
                                         <td>148</td>
                                         
                                         <td>0.406369</td>
+                                        
+                                        </tr>
+                                        
+                                        <tr>
+                                        <td>P002190812002</td>
+                                        
+                                        <td>34206308</td>
+                                        
+                                        <td>5130946200</td>
+                                        
+                                        <td>4951084744</td>
+                                        
+                                        <td>4692936193</td>
+                                        
+                                        <td>0.9649459999999999</td>
+                                        
+                                        <td>0.9146340000000001</td>
+                                        
+                                        <td>150</td>
+                                        
+                                        <td>150</td>
+                                        
+                                        <td>0.478058</td>
+                                        
+                                        <td>33644596</td>
+                                        
+                                        <td>4906953533</td>
+                                        
+                                        <td>4764297766</td>
+                                        
+                                        <td>4526350358</td>
+                                        
+                                        <td>0.970928</td>
+                                        
+                                        <td>0.922436</td>
+                                        
+                                        <td>145</td>
+                                        
+                                        <td>145</td>
+                                        
+                                        <td>0.47479799999999994</td>
                                         
                                         </tr>
                                         
@@ -174,7 +256,11 @@
                                         <form class="layui-form" >
                                             <select id='base_content' lay-filter='base_content' >
                                                 
+                                                <option value='B002190812002' name='B002190812002' selected>B002190812002</option>
+                                                
                                                 <option value='P001190115001' name='P001190115001' selected>P001190115001</option>
+                                                
+                                                <option value='P002190812002' name='P002190812002' selected>P002190812002</option>
                                                 
                                                 <option value='P002190812015' name='P002190812015' selected>P002190812015</option>
                                                 
@@ -182,6 +268,22 @@
                                         </form>  
                                     </div>
                                     
+                                    
+                                    <div class="layui-row layui-col-space20">                                        
+                                        <div id='base_content-B002190812002' class='base_content-quater'>
+                                            <div class="layui-col-md6" >
+                                                <label>B002190812002 read1碱基含量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/B002190812002/read1.base_content.png"/>
+                                            </div>     
+                                            <div  class="layui-col-md6" >
+                                                <label>B002190812002 read2碱基含量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/B002190812002/read2.base_content.png"/>                                                
+                                            </div> 
+                                            <div>
+                                                <p>注：左边代表同一个样本的read1碱基含量和GC分布图,右边代表对应的read2碱基含量和GC分布图。横坐标是Reads碱基坐标，表示Reads上从5’到3’端碱基的依次排列；纵坐标是所有Reads在该测序位置A、C、G、T、N碱基分别占的百分比，不同碱基用不同颜色表示。序列的起始位置与测序的引物接头相连，因此A、C、G、T在起始端会有所波动，后面会趋于稳定（受限制于测序策略，RAD等基于酶切手段测序该图波动较大）。模糊碱基N所占比例越低，说明未知碱基越少，测序样本受系统AT偏好影响越小。</p>
+                                            </div>
+                                        </div>                                   
+                                    </div>                                                   
                                     
                                     <div class="layui-row layui-col-space20">                                        
                                         <div id='base_content-P001190115001' class='base_content-quater'>
@@ -192,6 +294,22 @@
                                             <div  class="layui-col-md6" >
                                                 <label>P001190115001 read2碱基含量分布图：</label>
                                                 <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/P001190115001/read2.base_content.png"/>                                                
+                                            </div> 
+                                            <div>
+                                                <p>注：左边代表同一个样本的read1碱基含量和GC分布图,右边代表对应的read2碱基含量和GC分布图。横坐标是Reads碱基坐标，表示Reads上从5’到3’端碱基的依次排列；纵坐标是所有Reads在该测序位置A、C、G、T、N碱基分别占的百分比，不同碱基用不同颜色表示。序列的起始位置与测序的引物接头相连，因此A、C、G、T在起始端会有所波动，后面会趋于稳定（受限制于测序策略，RAD等基于酶切手段测序该图波动较大）。模糊碱基N所占比例越低，说明未知碱基越少，测序样本受系统AT偏好影响越小。</p>
+                                            </div>
+                                        </div>                                   
+                                    </div>                                                   
+                                    
+                                    <div class="layui-row layui-col-space20">                                        
+                                        <div id='base_content-P002190812002' class='base_content-quater'>
+                                            <div class="layui-col-md6" >
+                                                <label>P002190812002 read1碱基含量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/P002190812002/read1.base_content.png"/>
+                                            </div>     
+                                            <div  class="layui-col-md6" >
+                                                <label>P002190812002 read2碱基含量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/P002190812002/read2.base_content.png"/>                                                
                                             </div> 
                                             <div>
                                                 <p>注：左边代表同一个样本的read1碱基含量和GC分布图,右边代表对应的read2碱基含量和GC分布图。横坐标是Reads碱基坐标，表示Reads上从5’到3’端碱基的依次排列；纵坐标是所有Reads在该测序位置A、C、G、T、N碱基分别占的百分比，不同碱基用不同颜色表示。序列的起始位置与测序的引物接头相连，因此A、C、G、T在起始端会有所波动，后面会趋于稳定（受限制于测序策略，RAD等基于酶切手段测序该图波动较大）。模糊碱基N所占比例越低，说明未知碱基越少，测序样本受系统AT偏好影响越小。</p>
@@ -223,7 +341,11 @@
                                         <form class="layui-form" >
                                             <select id='base_quality' lay-filter='base_quality' >
                                                 
+                                                <option value='B002190812002' name='B002190812002' selected>B002190812002</option>
+                                                
                                                 <option value='P001190115001' name='P001190115001' selected>P001190115001</option>
+                                                
+                                                <option value='P002190812002' name='P002190812002' selected>P002190812002</option>
                                                 
                                                 <option value='P002190812015' name='P002190812015' selected>P002190812015</option>
                                                 
@@ -231,6 +353,22 @@
                                         </form>  
                                     </div>
                                     
+                                    
+                                    <div class="layui-row layui-col-space20">                                        
+                                        <div id='base_quality-B002190812002' class='base_quality-quater'>
+                                            <div class="layui-col-md6" >
+                                                <label>B002190812002 read1碱基质量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/B002190812002/read1.base_quality.png"/>
+                                            </div>     
+                                            <div  class="layui-col-md6" >
+                                                <label>B002190812002 read2碱基质量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/B002190812002/read2.base_quality.png"/>                                                
+                                            </div> 
+                                            <div>
+                                                <p>注：左边代表同一个样本的read1碱基质量分布图,右边代表对应的read2碱基质量分布图。横坐标是Reads碱基坐标位置，表示Reads上从5'到3'端依次碱基的排列；纵坐标是所有Reads在该位点处碱基的平均质量值。</p>
+                                            </div>
+                                        </div>                                   
+                                    </div>                                                   
                                     
                                     <div class="layui-row layui-col-space20">                                        
                                         <div id='base_quality-P001190115001' class='base_quality-quater'>
@@ -241,6 +379,22 @@
                                             <div  class="layui-col-md6" >
                                                 <label>P001190115001 read2碱基质量分布图：</label>
                                                 <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/P001190115001/read2.base_quality.png"/>                                                
+                                            </div> 
+                                            <div>
+                                                <p>注：左边代表同一个样本的read1碱基质量分布图,右边代表对应的read2碱基质量分布图。横坐标是Reads碱基坐标位置，表示Reads上从5'到3'端依次碱基的排列；纵坐标是所有Reads在该位点处碱基的平均质量值。</p>
+                                            </div>
+                                        </div>                                   
+                                    </div>                                                   
+                                    
+                                    <div class="layui-row layui-col-space20">                                        
+                                        <div id='base_quality-P002190812002' class='base_quality-quater'>
+                                            <div class="layui-col-md6" >
+                                                <label>P002190812002 read1碱基质量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/P002190812002/read1.base_quality.png"/>
+                                            </div>     
+                                            <div  class="layui-col-md6" >
+                                                <label>P002190812002 read2碱基质量分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/P002190812002/read2.base_quality.png"/>                                                
                                             </div> 
                                             <div>
                                                 <p>注：左边代表同一个样本的read1碱基质量分布图,右边代表对应的read2碱基质量分布图。横坐标是Reads碱基坐标位置，表示Reads上从5'到3'端依次碱基的排列；纵坐标是所有Reads在该位点处碱基的平均质量值。</p>
