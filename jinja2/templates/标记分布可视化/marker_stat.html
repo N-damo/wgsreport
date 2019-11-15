@@ -18,16 +18,18 @@
                             <div id="标记位点染色体分布" class="layui-tab-item layui-show">
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
-                                        <form >
+                                        <form class="layui-form">
                                             <select id='sample_selected' lay-filter='sample_selected'>
                                                 {% for key in dict_sub %}
                                                 <option value={{key}} name={{key}} selected>{{key}}</option>
                                                 {% endfor %}
                                             </select> 
                                         </form>   
-                                        {% for key in dict_sub %}
-                                        <div class="layui-row layui-col-space20">                                        
-                                            <div id='marker-{{key}}' class='marker-quater'>
+                                    </div>
+                                    {% for key in dict_sub %}
+                                    <div class="layui--col-xs12">                                        
+                                        <div id='marker-{{key}}' class='marker-quater'>
+                                            <div class="layui-row layui-col-space20">
                                                 <div class="layui-col-md6" >
                                                     <label>{{key}} SNP标记位点染色体分布：</label>
                                                     <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../3.SNP/{{key}}/SNP_marker_density.png"/>
@@ -39,43 +41,62 @@
                                                 <div class='layui-col-xs12'>
                                                     <p>注： 横坐标为22条常染色体和XY性染色体,纵坐标代表染色体窗口(染色体窗口数X窗口大小=染色体大小)，不同色块颜色代表不同normalised标记数量。左右分别为SNP/INDEL标记分布热图</p>
                                                 </div> 
-                                            </div>      
-                                                                          
-                                        </div>                                                   
-                                        {% endfor %}  
-                                    </div>
+                                            </div>
+                                        </div>      
+                                                                        
+                                    </div>                                                   
+                                    {% endfor %}  
+                                    
                                 </div>
                             </div>
                             <div id="Circos圈图展示" class="layui-tab-item ">
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
-                                        <form >
+                                        <form class="layui-form">
                                             <select id='circos' lay-filter='circos'>
                                                 {% for key in dict_sub %}
                                                 <option value={{key}} name={{key}} selected>{{key}}</option>
                                                 {% endfor %}
+                                                <option value='all' name='all' selected>all</option>
                                             </select> 
                                         </form>   
-                                        {% for key in dict_sub %}
-                                        <div class="layui-row layui-col-space20">                                        
-                                            <div id='circos-{{key}}' class='circos-quater'>
+                                    </div>
+                                    {% for key in dict_sub %}
+                                    <div class="layui-col-xs12">                                        
+                                        <div id='circos-{{key}}' class='circos-quater'>
+                                            <div class="layui-row">
                                                 <div class="layui-col-md6" >
                                                     <label>{{key}} SNP标记位点染色体分布：</label>
-                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../3.SNP/{{key}}/SNP_marker_density.png"/>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../3.SNP/{{key}}/{{key}}_SNP.circos.png"/>
                                                 </div>  
                                                 <div class="layui-col-md6" >
                                                     <label>{{key}} INDEL标记位点染色体分布：</label>
-                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../4.INDEL/{{key}}/INDEL_marker_density.png"/>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../4.INDEL/{{key}}/{{key}}_INDEL.circos.png"/>
                                                 </div> 
                                                 <div class='layui-col-xs12'>
                                                     <p>注： 横坐标为22条常染色体和XY性染色体,纵坐标代表染色体窗口(染色体窗口数X窗口大小=染色体大小)，不同色块颜色代表不同normalised标记数量。左右分别为SNP/INDEL标记分布热图</p>
                                                 </div> 
-                                            </div>                                 
-                                        </div>                                                   
-                                        {% endfor %}  
-
-                                    </div>
-                                     
+                                            </div>
+                                        </div>                                 
+                                    </div>                                                   
+                                    {% endfor %}  
+                                    <div class="layui-col-xs12">                                        
+                                        <div id='circos-all' class='circos-quater'>
+                                            <div class="layui-row layui-col-space20">
+                                                <div class="layui-col-md6" >
+                                                    <label>all SNP标记位点染色体分布：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../3.SNP/all_SNP.circos.png"/>
+                                                </div>  
+                                                <div class="layui-col-md6" >
+                                                    <label>all INDEL标记位点染色体分布：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px;margin-left: 50px;" src="../../4.INDEL/all_INDEL.circos.png"/>
+                                                </div> 
+                                                <div class='layui-col-xs12'>
+                                                    <p>注： 横坐标为22条常染色体和XY性染色体,纵坐标代表染色体窗口(染色体窗口数X窗口大小=染色体大小)，不同色块颜色代表不同normalised标记数量。左右分别为SNP/INDEL标记分布热图</p>
+                                                </div> 
+                                            </div>
+                                        </div>                                 
+                                    </div>   
                                 </div>
                             </div> 
                         </div>

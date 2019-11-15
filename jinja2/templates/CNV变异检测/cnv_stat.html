@@ -41,29 +41,27 @@
                             <div id="CNV长度分布" class="layui-tab-item ">
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
-                                        <form >
+                                        <form class="layui-form">
                                             <select id='sample_selected' lay-filter='cnv'>
                                                 {% for key in dict_sub %}
                                                 <option value={{key}} name={{key}} selected>{{key}}</option>
                                                 {% endfor %}
                                             </select> 
-                                        </form>   
-                                        {% for key in dict_sub %}
-                                        <div class="layui-row layui-col-space20">                                        
-                                            <div id='cnv-{{key}}' class='cnv-quater'>
-                                                <div class="layui-col-xs12" >
-                                                    <label >{{key}} CNV长度小提琴图：</label>
-                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../5.CNV/{{key}}/CNV_distribution.png"/>
-                                                </div>  
-                                                 
-                                            </div>                                   
-                                        </div>                                                   
-                                        {% endfor %}  
-                                        <div>
-                                                <p>注： 横坐标表示Deletion/Duplication类型；纵坐标表示CNV的长度。</p>
-                                            </div>
-                                    </div>
-                                     
+                                        </form>  
+                                    </div> 
+                                    {% for key in dict_sub %}
+                                    <div class="layui-col-x12">                                        
+                                        <div id='cnv-{{key}}' class='cnv-quater'>
+                                            <div class="layui-col-xs12" >
+                                                <label >{{key}} CNV长度小提琴图：</label>
+                                                <img style="width:50%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../6.CNV/{{key}}/CNV_distribution.png"/>
+                                            </div>  
+                                        </div>                                   
+                                    </div>                                                   
+                                    {% endfor %}  
+                                    <div>
+                                        <p>注： 横坐标表示Deletion/Duplication类型；纵坐标表示CNV的长度。</p>
+                                    </div>   
                                 </div>
                             </div>                 
                         </div>

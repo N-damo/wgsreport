@@ -1,0 +1,12 @@
+id,item,tool,version,parameter
+1,原始数据质控,Fastp,0.19.5,https://anaconda.org/bioconda/fastp
+2,参考基因组比对,BWA,0.7.17,https://sourceforge.net/projects/bio-bwa/files/
+3,短变异位点检测,sentieon,201808.02,https://www.sentieon.com/products/
+4,SV变异检测,Delly,v0.7.9,https://omictools.com/delly-tool
+5,CNV变异检测,CNVnator,v0.3,http://sv.gersteinlab.org/cnvnator/
+6,SSR标记分析,MISA,1,http://pgrc.ipk-gatersleben.de/misa/
+7,标记分布可视化,Circos,1,http://circos.ca/
+8,引物设计,Primer3,0.4.0,http://bioinfo.ut.ee/primer3-0.4.0/
+9,基因组局部组装,SOAPdenovo,2.04-r240,http://soap.genomics.org.cn/soapdenovo.html
+10,CRISPR/Cas9基因编辑分析,CRISPResso,1.0.13,https://github.com/lucapinello/CRISPResso
+11,转基因检测,aimhii,0.5.5,https://pypi.org/project/aimhii/

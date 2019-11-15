@@ -181,6 +181,8 @@ class Circos():
                 else:
                     return k
 
+
+
     def heatmap_plot(self,bed):
         plt.clf()
         df=pd.read_table(bed,sep='\t',header=None)

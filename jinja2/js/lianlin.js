@@ -163,6 +163,21 @@ function shortvariant_func(){
     })
 }
 
+
+function sv_function(){
+    var form=layui.form;
+    form.render();
+    var sample=$('#sample_selected').val();
+    $('.sv-quater').hide();
+    $('#sv-'+sample).show();
+    form.on('select(cnv)',function(data){
+        $('.sv-quater').hide();
+        $('#sv-'+data.value).show();
+    })
+}
+
+
+
 function cnv_function(){
     var form=layui.form;
     form.render();

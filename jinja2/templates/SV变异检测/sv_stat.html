@@ -1,29 +1,17 @@
-<!DOCTYPE html>
-<head>
-  <meta charset="UTF-8">
-  <title>layui</title>
-  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
-  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-  <link rel='stylesheet' type='text/css' href="../css/style.css" />
-</head>
-<body class="layui-form" style="background-color:#eee;padding: 20px;">
-    <div class="layui-fluid">
-        <div class="layui-container">
-            <div class="layui-row layui-col-space20">
-                <div class="layui-col-xs12">
+{%set sample=sample_list|first%}
+{% extends '测序数据质控/qc.html'%}
+{%block background%}
                     <h1>SV变异统计</h1>
                     <p>
                         染色体结构变异（SV）是染色体变异的一种，类型包括：缺失（Deletion, DEL）、插入（Insertion, INS）、倒位（Inversion, INV）、易位（Translocation, BND）和重复（Duplication, DUP）。
                     </p>
+{%endblock%}
                 </div>
-                <div class="layui-col-xs12">
+{%block parameter%}
                     <h3>分析软件</h3>
                     <p>分析软件：Delly</p>
-                </div>
-                <div class="layui-col-xs12">
-                    <div class="layui-tab">
+{%endblock%}
+{%block tab%}
                         <ul class="layui-tab-title">
                             <li class="magicalcoder-tab-title layui-this">SV数据统计</li><li class="magicalcoder-tab-title">SV长度分布</li>
                         </ul>
@@ -32,59 +20,58 @@
                                 <table class="layui-table" lay-filter="demo">
                                     <thead>
                                         <tr>
-                                        <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
-                                        <th lay-data={align:"center",width:150,sort:true,field:"snp_number"}>deletion</th>
-                                        <th lay-data={align:"center",width:150,sort:true,field:"ti"}>duplication</th>
-                                        <th lay-data={align:"center",width:150,sort:true,field:"tv"}>insertion</th>
-                                        <th lay-data={align:"center",width:150,sort:true,field:"ti/tv"}>invertion</th>
-                                        <th lay-data={align:"center",width:150,sort:true,field:"het"}>BND</th>
+                                            <th lay-data={align:"center",width:150,sort:true,field:"sample"}>sample</th>
+                                            {%for col in dict_sub[sample]%}
+                                            <th lay-data={align:"center",width:150,sort:true,field:"{{col[0]}}"}>{{col[0]}}</th>
+                                            {%endfor%}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% for variant in variant_stat %}
+                                        {% for key in dict_sub %}
                                         <tr>
-                                        <td>{{ variant.sample }}</td>
-                                        <td>{{ variant.deletion }}</td>
-                                        <td>{{ variant.duplication }}</td>
-                                        <td>{{ variant.insertion }}</td>
-                                        <td>{{ variant.invertion }}</td>
-                                        <td>{{ variant.BND }}</td>
+                                        <td>{{ key }}</td>
+                                        {%for col in dict_sub[key]%}
+                                        <td>{{col[1]}}</td>
+                                        {%endfor%}
                                         </tr>
                                         {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                             <div id="SV长度分布" class="layui-tab-item ">
-                                <div class="layui-row">
-                                    <div class="layui-col-xs12 layui-col-lg4">
-                                        <form >
-                                            
-                                            <select name='' id='sample_selected' >
-                                                {% for variant in variant_stat %}
-                                                <option value={{map.id}} name='sample_option'} >{{map.sample}}</option>
+                                <div class="layui-row layui-col-space20">
+                                    <div class="layui-col-xs12">
+                                        <form class="layui-form">                                           
+                                            <select id='sample_selected' >
+                                                {% for key in dict_sub %}
+                                                <option value={{key}} name='key'} >{{key}}</option>
                                                 {% endfor %}
                                             </select> 
-                                            <input type="submit" value="Submit" id='sample_used' />
-                                            <script>
-                                            $("#sample_used").click(function(){
-                                                $("#adsense").val($("#sample_selected option:selected").val());
-                                            });
-                                            </script>
-                                            <input  type='hidden' name='adsense' id='adsense' value=''/>
-                                        </form>      
+                                        </form>    
                                     </div>
+                                    {% for key in dict_sub %}
+                                    <div class="layui-col-xs12">                           
+                                        <div id='sv-{{key}}' class='sv-quater'>
+                                            <div class="layui-col-xs12" >
+                                                <label >{{key}} SV长度分布图：</label>
+                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../5.SV/{{key}}/sv_length_distribution.png"/>
+                                            </div>      
+                                        </div>                                   
+                                    </div>                                               
+                                    {% endfor %}  
+                                    <div>
+                                        <p>注： 横坐标表示SV类型的SV长度；纵坐标表示SV的数目/百分比。</p>
+                                    </div>    
                                 </div>
                             </div>                 
                         </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-        </div>
-    </div>
+{%endblock%}
+{%block js%}
     <script>
         icon_append();
         table_function();
+        sv_function();
     </script>
+{%endblock%}
 </body>
 </html>
