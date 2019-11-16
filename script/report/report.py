@@ -11,6 +11,8 @@ import re
 import subprocess
 
 base_dir=os.path.dirname(os.path.abspath(__file__))
+
+
 class HTML(object):
     
     def __init__(self, template, prefix, dict_sub=None,template_dir=os.path.join(base_dir,'templates')):
@@ -231,12 +233,12 @@ class CNV(object):
         return HTML(template,'page/CNV变异检测/cnv_stat.html',dict_sub={'dict_sub':dict_sub,'sample_list':sample_list}).render__()
 
 
-class SSR(object):
-    def background(self,template='SSR标记分析/background.html'):
-        return HTML(template).render__()
+# class SSR(object):
+#     def background(self,template='SSR标记分析/background.html'):
+#         return HTML(template).render__()
 
-    def ssr_stat(self,template='SSR标记分析/ssr_stat.html'):
-        return HTML(template).render__()
+#     def ssr_stat(self,template='SSR标记分析/ssr_stat.html'):
+#         return HTML(template).render__()
 
 class Marker(object):
     def __init__(self):
@@ -252,8 +254,9 @@ class Marker(object):
         dict_sub=snp['Samples'].to_list()
         return HTML(template,'page/标记分布可视化/marker_stat.html',dict_sub={'dict_sub':dict_sub}).render__()
 
-if __name__ == '__main__':
-    #base_dir=os.path.dirname(os.path.abspath(__file__))
+
+
+def html_report():
     subprocess.call('cp -r {dir}/js {dir}/css {dir}/img ./'.format(dir=base_dir),shell=True)
     Index()
     Introduction()
@@ -263,3 +266,6 @@ if __name__ == '__main__':
     SV()
     CNV()
     Marker()
+
+if __name__ == '__main__':
+    html_report()

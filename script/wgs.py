@@ -10,6 +10,25 @@ from pipeline.shortVariant import ShortVariant
 from pipeline.cnv import CNV
 from pipeline.sv import SV
 from autostat import wgshsmetrics
+import argparse
+from argparse import ArgumentParser
+from report.report import html_report
+
+
+def get_args():
+    parser=ArgumentParser(description='wgs workflow,including pipeline,autostat and html report generation')
+    parser.add_argument('--input','-i',help='sample info',type=extend_file,required=True)
+    parser.add_argment('--run','-r',choice={'on','off'},help='if you choose run on,please add -r argument.the default is off',default='off')
+
+
+def extend_file(file):
+    if os.path.exists(file):
+        pass
+    else:
+        raise argparse.ArgumentTypeError('{file} dose not exist'.format(file=file))
+    return file
+
+
 
 class WGS(object):
     
@@ -54,12 +73,18 @@ class WGS(object):
 
 
 if __name__ == '__main__':
-    input=sys.argv[1]
+    args=get_args()
+    input=args.input
+    run=args.run
     pipeline=WGS(input)
     groups=pipeline.groups#样品信息，key=sampleName,value='fq1,fq2,adapter,library,sampleName
     working_space=pipeline.working_space#first line in input
-    ShortVariant(groups,working_space).main('off')
-    CNV(groups,working_space).CnvnatorCNV()
-    SV(groups,working_space).dellySV()
-    wgshsmetrics.stat(list(groups.keys()))
+    if run == 'off':
+        ShortVariant(groups,working_space).main('off')
+    else:
+        ShortVariant(groups,working_space).main('on')
+        CNV(groups,working_space).CnvnatorCNV()
+        SV(groups,working_space).dellySV()
+        wgshsmetrics.stat(list(groups.keys()))
+        html_report()
     
