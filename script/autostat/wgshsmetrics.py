@@ -17,8 +17,8 @@ base_dir=os.path.dirname(os.path.abspath(__file__))
 def stat(sample_list=None):
     if sample_list == None:
         raise SystemError('CNV stat need sample list,cnv file looks like sample_cnvnator.vcf.gz and tabix file also need.\n')
-    genecode='/Users/linlian/genome/gencode.v31.annotation.bed'
-    makewindow='/Users/linlian/Desktop/reports/200kb.bed'
+    genecode='/share/data3/lianlin/1kg/gene/gencode.v31.annotation.bed'
+    makewindow='/share/data3/lianlin/soft/bin/wgs/200kb.bed'
     vcf = 'annovar.hg38_multianno.vcf'
     sv='delly.vcf.gz'
     Basic_QC('1.qc')
