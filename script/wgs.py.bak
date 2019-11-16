@@ -19,8 +19,6 @@ def get_args():
     parser=ArgumentParser(description='wgs workflow,including pipeline,autostat and html report generation')
     parser.add_argument('--input','-i',help='sample info',type=extend_file,required=True)
     parser.add_argument('--run','-r',choices={'on','off'},help='if you choose run on,please add -r argument.the default is off',default='off')
-    args=parser.parse_args()
-    return args
 
 
 def extend_file(file):

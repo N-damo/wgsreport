@@ -77,7 +77,7 @@ class ShortVariant(object):
             part.append(CollectInsertSizeMetrics)
             CollectWgsMetrics='{tool} CollectWgsMetrics -I {sample}.dedup.bam -O {sample}.wgs_metrics.txt -R {reference} ;'.format(tool=self.gatk,sample=sample,reference=self.reference)
             part.append(CollectWgsMetrics)
-            bedgraph="samtools bedcov {bed} {sample}.dedup.bam|awk '{{print $1,$2,$3,$4/($3-$2)}}'|tr ' ' '\\t' >{sample}_bedgraph.bed ;".format(bed=self.makewindow,sample=sample)
+            bedgraph="samtools bedcov {bed} {sample}.dedup.bam|awk '{{print $1,$2,$3,$4/($3-$2)}}'|tr ' ' '\\t' >{sample}.bedgraph.bed ;".format(bed=self.makewindow,sample=sample)
             part.append(bedgraph)
             yield part, info_list
 
