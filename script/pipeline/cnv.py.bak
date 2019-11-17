@@ -34,4 +34,4 @@ class CNV(object):
                 f.write('\n'.join([step1,step2,step3,step4,step5,step6,step7]))
                 f.write('wait ;')
                 
-            subprocess.call('qsub {}/{}_cnv.bat ;'.format(self.working_space,sample),shell=True)
+            subprocess.call('qsub {}/{}_cnv.bat ;'.format(self.working_space,sample),shell=True£©

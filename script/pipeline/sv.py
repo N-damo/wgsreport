@@ -33,4 +33,5 @@ class SV(object):
             f.write(sge)
             f.write('\n'.join([step1,step2,step3,step4]))
             f.write('wait ;')
+        subprocess.call('qsub sv.bat ;',shell=True)
         

@@ -189,17 +189,18 @@ class ShortVariant(object):
         return step2_ID
 
     def run_pbs_step3(self, step2_ID):
+        workspace=os.path.join(self.working_space,'workspace')
         while 1:
             qstat_ID = self.run_check_by_time()
             if step2_ID not in qstat_ID:
                 subprocess.call(
                     'date +"%Y-%m-%d %H:%M:%S" >> gm.log', shell=True)
                 subprocess.call('echo end genotyping>> gm.log', shell=True)
-                files = os.listdir('workspace')
+                files = os.listdir(workspace)
                 pbs = [i for i in files if i.endswith('.pbs')]
                 pbs_job_ID = []
                 for sample in pbs:
-                    cmd = 'qsub {sample} ;'.format(sample=os.path.join('workspace',sample))
+                    cmd = 'qsub {sample} ;'.format(sample=os.path.join(workspace,sample))
                     p = subprocess.Popen(
                         cmd, shell=True, stdout=subprocess.PIPE)
                     ID = p.communicate()[0].split()[2]
@@ -223,7 +224,6 @@ class ShortVariant(object):
                 subprocess.call(
                     'echo completed imputation and merge vcf,genelize final.vcf.gz locally>> gm.log', shell=True)
                 subprocess.call('sh asnoerror.bat', shell=True)
-                subprocess.call('sh sv.bat', shell=True)
                 # add mtDNA haplogroup prediction
                 break
             else:
