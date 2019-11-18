@@ -25,9 +25,9 @@ class VcfStat(object):
 
     #snp_col = ['Samples','Total_variants','Passing filter','Unpassing filter','Total_SNPs','Missing genotype','Same as reference','Homozygous','Heterozygous','Ti','Tv','Ti/Tv','Fraction of 1000genome(%)','Fraction of dbsnp(%)','Novel','Intergenic','Intronic','Exonic','Splicing','ncRNA','Downstream','Upstream','UTR3','UTR5','Unknown']
     snp_col = ['Samples', 'Total_SNPs', 'Missing genotype', 'Homozygous', 'Heterozygous', 'Ti', 'Tv', 'Ti/Tv',
-            'Intergenic', 'Intronic', 'Exonic', 'Splicing', 'ncRNA', 'Downstream', 'Upstream', 'UTR3', 'UTR5', 'Unknown']
+               'Intergenic', 'Intronic', 'Exonic', 'Splicing', 'ncRNA', 'Downstream', 'Upstream', 'UTR3', 'UTR5', 'Unknown']
     indel_col = ['Samples', 'Total_INDELs', 'Missing genotype', 'TotalInsertion', 'TotalDeletion', 'Homozygous', 'Heterozygous',
-                'Intergenic', 'Intronic', 'Exonic', 'Splicing', 'ncRNA', 'Downstream', 'Upstream', 'UTR3', 'UTR5', 'Unknown']
+                 'Intergenic', 'Intronic', 'Exonic', 'Splicing', 'ncRNA', 'Downstream', 'Upstream', 'UTR3', 'UTR5', 'Unknown']
     func_col = ['Samples', 'synonymous', 'nonsynonymous', 'stopgain', 'stoploss', 'frameshift_insertion', 'frameshift_deletion',
                 'frameshift_block_substitution', 'nonframeshift_insertion', 'nonframeshift_deletion', 'nonframeshift_block_substitution', 'ExonicFunc_Unknown']
     #total_col = list(set(snp_col + indel_col + func_col))
@@ -166,7 +166,7 @@ class VcfStat(object):
             try:
                 filter_ = list(rec.filter)[0]
             except IndexError:
-                print('filter stat unknow,set it to be PASS stat.\n')
+                #print('filter stat unknow,set it to be PASS stat.\n')
                 filter_ = 'PASS'
             try:
                 #kilogenome_ALL = rec.info['ALL.sites.2015_08']
@@ -186,9 +186,13 @@ class VcfStat(object):
                         # EQUAL TO TOTAL_SNP(INDEL)S + SAME AS REFERENCE + MISSING GENOTYPE
                         samples_stat[sampleRecord.name]['Passing filter'] += 1
                         alleles = sampleRecord.alleles
-                        GT = sampleRecord['GT']
-                        DP = sampleRecord['DP']
-                        GQ = sampleRecord['GQ']
+                        try:
+                            GT = sampleRecord['GT']
+                            # print(GT,sampleRecord.name,self.pos)
+                            DP = sampleRecord['DP']
+                            GQ = sampleRecord['GQ']
+                        except KeyError:
+                            continue
                         if GT.__eq__((0, 0)):
                             samples_stat[sampleRecord.name]['Same as reference'] += 1
                             continue
@@ -197,7 +201,8 @@ class VcfStat(object):
                             continue
                         else:
                             samples_stat[sampleRecord.name]['depth'].append(DP)
-                            samples_stat[sampleRecord.name]['quality'].append(GQ)
+                            samples_stat[sampleRecord.name]['quality'].append(
+                                GQ)
                             samples_stat[sampleRecord.name]['Total_{}s'.format(
                                 self.variant_type)] += 1  # EUQAL TO TOTALINSERT + TOTALDELETE
                             if self.variant_type == 'INDEL':
@@ -310,10 +315,10 @@ class VcfStat(object):
                         index=False, header=True)  # sample level
         self.indel_length_format(samples_stat, 'Deletion')
         self.indel_length_format(samples_stat, 'Insertion')
-        self.site_depth_acumulative_plot(samples_stat,'depth')
-        self.site_depth_acumulative_plot(samples_stat,'quality')
+        self.site_depth_acumulative_plot(samples_stat, 'depth')
+        self.site_depth_acumulative_plot(samples_stat, 'quality')
 
-    def site_depth_acumulative_plot(self,samples_stat,stat):
+    def site_depth_acumulative_plot(self, samples_stat, stat):
         # with open('sample_stats.json','wt') as f:
         #     json.dump(samples_stat,f)
         for sample in samples_stat:
@@ -321,31 +326,32 @@ class VcfStat(object):
                 os.mkdir(os.path.join(self.dir, sample))
             except OSError:
                 pass
-            depth=samples_stat[sample][stat]
-            df=pd.DataFrame({stat:depth})
-            df2={}
+            depth = samples_stat[sample][stat]
+            df = pd.DataFrame({stat: depth})
+            df2 = {}
             for group in df.groupby(stat):
-                df2[group[0]]=len(group[1])
-            df2=pd.DataFrame.from_dict(df2,orient='index')
-            df2=df2.reset_index()
-            df2.columns=[stat,'dense']
-            df2['acumulative']=0
-            df2=df2.sort_values(stat)
+                df2[group[0]] = len(group[1])
+            df2 = pd.DataFrame.from_dict(df2, orient='index')
+            df2 = df2.reset_index()
+            df2.columns = [stat, 'dense']
+            df2['acumulative'] = 0
+            df2 = df2.sort_values(stat)
             for i in range(len(df2)):
-                df2.loc[i,'acumulative']=sum(df2.loc[:i,'dense'])
-            df2['acumulative']=df2['acumulative']/len(df)
+                df2.loc[i, 'acumulative'] = sum(df2.loc[:i, 'dense'])
+            df2['acumulative'] = df2['acumulative']/len(df)
             plt.clf()
-            plt.plot(stat,'acumulative',data=df2,color='skyblue')
-            plt.fill_between(stat,'acumulative',data=df2,color='skyblue')
+            plt.plot(stat, 'acumulative', data=df2, color='skyblue')
+            plt.fill_between(stat, 'acumulative', data=df2, color='skyblue')
             plt.xlabel('{}'.format(stat))
-            plt.ylabel('acumulative {} proportion(%)'.format(self.variant_type))
-            plt.title('{} {} acumulative'.format(self.variant_type,stat))
+            plt.ylabel('acumulative {} proportion(%)'.format(
+                self.variant_type))
+            plt.title('{} {} acumulative'.format(self.variant_type, stat))
             plt.savefig("{module}/{sample}/{stat}_acumulative.png".format(
-                module=self.dir, sample=sample, stat=stat), format='png',bbox_inches='tight',dpi=200)
+                module=self.dir, sample=sample, stat=stat), format='png', bbox_inches='tight', dpi=200)
             plt.close()
             df2 = df2[[stat, 'acumulative']]
             df2.to_csv('{module}/{sample}/{prefix}_acumulative.csv'.format(module=self.dir,
-                                                                        sample=sample, prefix=stat), index=False, header=True)
+                                                                           sample=sample, prefix=stat), index=False, header=True)
 
     def indel_length_format(self, samples_stat, stat):
         if self.variant_type == 'INDEL':
@@ -387,29 +393,29 @@ class VcfStat(object):
         df['acumulative'] = 0
         #df['count'] = df['count'].astype(int)
         df = df.sort_values(prefix)
-        df2={}
+        df2 = {}
         for group in df.groupby(prefix):
-            df2[group[0]]=len(group[1])
-        df2=pd.DataFrame.from_dict(df2,orient='index')
-        df2=df2.reset_index()
-        df2.columns=[prefix,'dense']
-        df2['acumulative']=0
-        df2=df2.sort_values(prefix)
+            df2[group[0]] = len(group[1])
+        df2 = pd.DataFrame.from_dict(df2, orient='index')
+        df2 = df2.reset_index()
+        df2.columns = [prefix, 'dense']
+        df2['acumulative'] = 0
+        df2 = df2.sort_values(prefix)
         for i in range(len(df2)):
-            df2.loc[i,'acumulative']=sum(df2.loc[:i,'dense'])
-        df2['acumulative']=df2['acumulative']/len(df)
+            df2.loc[i, 'acumulative'] = sum(df2.loc[:i, 'dense'])
+        df2['acumulative'] = df2['acumulative']/len(df)
         plt.clf()
-        plt.plot(prefix, 'acumulative', data=df2,color='skyblue')
-        plt.fill_between(prefix,'acumulative',data=df2,color='skyblue')
+        plt.plot(prefix, 'acumulative', data=df2, color='skyblue')
+        plt.fill_between(prefix, 'acumulative', data=df2, color='skyblue')
         plt.xlabel('{} length(bp)'.format(prefix))
         plt.ylabel('acumulative proportion(%)')
         plt.title('{} length acumulative'.format(prefix))
         plt.savefig("{module}/{sample}/{prefix}.length_acumulative.png".format(
-            module=self.dir, sample=sample, prefix=prefix), bbox_inches='tight',dpi=200,format='png')
+            module=self.dir, sample=sample, prefix=prefix), bbox_inches='tight', dpi=200, format='png')
         plt.close()
         df = df[[prefix, 'acumulative']]
         df.to_csv('{module}/{sample}/{prefix}_acumulative.csv'.format(module=self.dir,
-                                                                     sample=sample, prefix=prefix), index=False, header=True)
+                                                                      sample=sample, prefix=prefix), index=False, header=True)
 
 
 if __name__ == '__main__':
