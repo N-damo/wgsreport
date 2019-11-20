@@ -5,9 +5,9 @@ import os
 import sys
 import pysam
 import logging
-import gzip
 import re
 import subprocess
+
 
 base_dir = os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))  # dir/to/script/pipeline
@@ -46,7 +46,7 @@ class Beagle(object):
                     GT = sampleRecord['GT']
                     PL = sampleRecord['PL']
                     # print(PL)
-                    if GT == (None, None):
+                    if GT == (None, None) or GT == (0,0):
                         GT = './.'
                     else:
                         GT = '/'.join([str(i) for i in GT])
@@ -74,7 +74,7 @@ class Beagle(object):
 
     def vcf_out(self):
         head = self.vcf_head()
-        with gzip.open('multiplex1.vcf.gz', 'wt') as f:
+        with open('multiplex1.vcf', 'wt') as f:
             f.write('##fileformat=VCFv4.2\n')
             f.write(
                 '##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">\n')
@@ -83,7 +83,7 @@ class Beagle(object):
                 '#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\tFORMAT\t{}\n'.format(head))
             for line in self.parse_vcf():
                 f.write(line+'\n')
-        subprocess.call('tabix multiplex1.vcf.gz', shell=True)
+        subprocess.call('bgzip multiplex1.vcf;tabix multiplex1.vcf.gz', shell=True)
 
     def sequence_split(self):
         vcfheader = os.path.join(main_root, 'file/vcfheader.vcf')

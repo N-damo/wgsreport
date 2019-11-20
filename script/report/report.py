@@ -256,7 +256,7 @@ class Marker(object):
 
 def html_report():
     subprocess.call(
-        'cp -r {dir}/js {dir}/css {dir}/img ./'.format(dir=base_dir), shell=True)
+        'cp -r {dir}/layui {dir}/img ./'.format(dir=base_dir), shell=True)
     Index()
     Introduction()
     Data_qc()

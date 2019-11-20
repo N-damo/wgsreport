@@ -41,4 +41,4 @@ class SV(object):
             logging.debug('just generate sv.bat,not run')
         else:
             logging.debug('qsub sv.bat ;')
-            subprocess.call('qsub sv.bat ;', shell=True)
+            subprocess.call('qsub {sv} ;'.format(sv=os.path.join(self.working_space,'sv.bat')), shell=True)

@@ -42,7 +42,7 @@
                                 <div class="layui-row layui-col-space20">
                                     <div class="layui-col-xs12">
                                         <form class="layui-form">                                           
-                                            <select id='sample_selected' >
+                                            <select id='tab1' lay-filter='tab1'>
                                                 {% for key in dict_sub %}
                                                 <option value={{key}} name='key'} >{{key}}</option>
                                                 {% endfor %}
@@ -51,7 +51,7 @@
                                     </div>
                                     {% for key in dict_sub %}
                                     <div class="layui-col-xs12">                           
-                                        <div id='sv-{{key}}' class='sv-quater'>
+                                        <div id='tab1-{{key}}' class='tab1-quater'>
                                             <div class="layui-col-xs12" >
                                                 <label >{{key}} SV长度分布图：</label>
                                                 <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../5.SV/{{key}}/sv_length_distribution.png"/>
@@ -70,7 +70,7 @@
     <script>
         icon_append();
         table_function();
-        sv_function();
+        tab1();
     </script>
 {%endblock%}
 </body>

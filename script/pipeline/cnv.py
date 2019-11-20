@@ -48,6 +48,6 @@ class CNV(object):
                 logging.debug(
                     'just generate {}_cnv.bat,not run'.format(sample))
             else:
-                cmd = 'qsub {}/{}_cnv.bat ;'.format(self.working_space, sample)
+                cmd = 'qsub {cnv} ;'.format(cnv=os.path.join(self.working_space, sample+'_cnv.bat'))
                 logging.debug(cmd)
                 subprocess.call(cmd, shell=True)

@@ -5,17 +5,16 @@
 	<head>
 		<meta charset="UTF-8">
         <title>wgs</title>
-        <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
-        <script src="https://lib.baomitu.com/json3/3.3.3/json3.min.js"></script>
-        <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
-        <script src="https://lib.baomitu.com/echarts/4.2.1/echarts.min.js"></script>
-        <link rel="stylesheet" type="text/css" href='css/style.css' />
+        <link rel="stylesheet" type="text/css" href="layui/css/layui.css" />
+        <script src="layui/layui.all.js"></script>
+        <script src="layui/lianlin.js"></script>
+        <link rel="stylesheet" type="text/css" href='layui/css/style.css' />
 	
 		<style type="text/css">
 			ul{bottom: 0; top: 0;}
 			.main{margin-left: 200px; position: absolute; right: 0; left: 0;}
 			.main #view1{width: 80%; position: fixed}
-			.main > button{margin-left: 0px; margin-top: 20px;}
+			.main > button{margin-left: 0px; margin-top: 0px;}
 			.layui-layer-tips .layui-layer-content{
 				background-color: transparent;
             }
@@ -40,14 +39,11 @@
 
 <body class="layui-form" style="background-color:#eee">
     <div class="layui-row layui-col-space20">
-        <div class="layui-col-md6 layui-col-lg3">
-            <img style="width:200px;margin-top:20px;margin-bottom: 100px;position:fixed" src="img/logo.png" />
-        </div>
-        <div class="layui-col-md6 layui-col-lg9">
-            <a class="layui-btn" style="float: right;margin-top:20px;margin-bottom: 100px;" href='mailto:guomaigene@gmiot.com'>report</a>
-        </div>
         <div class="layui-col-xs12">
-            <ul lay-shrink='all' class="layui-nav layui-nav-tree layui-nav-side dynamic-navigation" lay-filter="test" style="position: fixed;margin-top:100px;height:100% " >
+            <ul lay-shrink='all' class="layui-nav layui-nav-tree layui-nav-side dynamic-navigation" lay-filter="test" style="position: fixed;" >
+                <div style="text-align: center;">
+                    <a href='http://www.guomaigene.com/home' target='_blank'><img style="width: 70%;height:5%;margin-bottom: 50px;margin-top: 50px;" src="img/logo.png" /></a>
+                </div>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a href="page/项目背景/background.html" target="myFrame"><i class="layui-icon layui-icon-home" ></i>项目背景</a>
                     <dl class="layui-nav-child">
@@ -118,34 +114,47 @@
                         </dd>
                     </dl>
                 </li>
+                <li class="layui-nav-item">
+                    <p style="margin-top:50%;bottom:0;text-align: center"><a href="https://github.com/N-damo" target="_blank">Designed by Li'an Lin</a></p>
+                </li>
             </ul>
             <div class="layui-fluid">
-            <div class="main dynamic-navigation">
-                <button class="layui-btn layui-btn-primary" id="left"><i class="layui-icon layui-icon-shrink-right" id="left_icon" ></i></button>
-                <div id="view1">
-                    
+                <div class="main dynamic-navigation">
+                    <button class="layui-btn layui-btn-primary" id="left" title='收缩/展开'><i  class="layui-icon layui-icon-shrink-right" id="left_icon" ></i></button>
+                    <div id="view1">
                         <div class="layui-row layui-col-space20">
+                            <div class="layui-col-md6 layui-col-lg12" >
+                                <ul class="layui-nav layui-bg-blue" style="margin-left:200px;">
+                                    <li class="layui-nav-item"><a href="">首页</a></li>
+                                    <li class="layui-nav-item" ><a href="">基因产品</a></li>
+                                    <li class="layui-nav-item" ><a href="">基因检测</a></li>
+                                    <li class="layui-nav-item" ><a href="">示例报告</a></li>
+                                    <li class="layui-nav-item"><a href="">关于我们</a></li>
+                                    <li class="layui-nav-item"><a href="">个人中心</a></li>
+                                </ul> 
+                            </div>
+                            <div class="layui-col-md6 layui-col-lg11">
+                                <a class="layui-btn" style="float: right;margin-top:20px;margin-bottom: 100px;" href='mailto:guomaigene@gmiot.com'>report</a>
+                            </div>
                             <div class="layui-col-xs12 layui-col-lg12"  style='height:650px;margin-top: -120px;margin-left:50px;'>
-                                <iframe name="myFrame" croling="yes" frameborder="0" width="100%" height="100%"></iframe>
+                                <iframe src='page/项目背景/background.html' name="myFrame" croling="yes" frameborder="0" width="100%" height="100%"></iframe>
                             </div>
                             <div class="layui-col-xs12">
-                                <div class="layui-container" style="width: 30%">国脉生物科技有限公司</div>
+                                <div class="layui-container" style='margin-left: 50%;margin-right: 40%'>国脉生物科技有限公司</div>
                             </div>
                         </div>
                     </div>
                 </div>
-        
             </div>
         </div>
     </div>
-        
+   
 <script>
 var form=layui.form, $=layui.jquery;
 form.render();
 $('#left').click(function(){
     $(this).children(".layui-icon").toggleClass("layui-icon-spread-left");
     $(this).children(".layui-icon").toggleClass("layui-icon-shrink-right");
-
 
 })
 </script>

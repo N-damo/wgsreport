@@ -3,12 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>layui</title>
-  <link rel="stylesheet" type="text/css" href="https://www.layuicdn.com/layui-v2.5.4/css/layui.css" />
-  <script src="https://www.layuicdn.com/layui-v2.5.4/layui.all.js"></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
-  <link rel='stylesheet' type='text/css' href="../../css/style.css" />
-  <script src='../../js/lianlin.js'></script>
+  <link rel="stylesheet" type="text/css" href="../../layui/css/layui.css" />
+  <script src="../../layui/layui.all.js"></script>
+  <script src="../../layui/lianlin.js"></script>
+  <link rel="stylesheet" type="text/css" href='../../layui/css/style.css' />
 </head>
 <body class="layui-form" style="background-color:#eee;padding: 20px;">
     <div class="layui-fluid">
@@ -63,7 +61,7 @@
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
                                         <form class="layui-form" >
-                                            <select id='base_content' lay-filter='base_content' >
+                                            <select id='tab1' lay-filter='tab1' >
                                                 {% for key in dict_sub %}
                                                 <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
                                                 {% endfor %}
@@ -73,7 +71,7 @@
                                     
                                     {% for key in dict_sub %}
                                     <div class="layui-row layui-col-space20">                                        
-                                        <div id='base_content-{{key}}' class='base_content-quater'>
+                                        <div id='tab1-{{key}}' class='tab1-quater'>
                                             <div class="layui-col-md6" >
                                                 <label>{{key}} read1碱基含量分布图：</label>
                                                 <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/{{key}}/read1.base_content.png"/>
@@ -94,7 +92,7 @@
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
                                         <form class="layui-form" >
-                                            <select id='base_quality' lay-filter='base_quality' >
+                                            <select id='tab2' lay-filter='tab2' >
                                                 {% for key in dict_sub %}
                                                 <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
                                                 {% endfor %}
@@ -104,7 +102,7 @@
                                     
                                     {% for key in dict_sub %}
                                     <div class="layui-row layui-col-space20">                                        
-                                        <div id='base_quality-{{key}}' class='base_quality-quater'>
+                                        <div id='tab2-{{key}}' class='tab2-quater'>
                                             <div class="layui-col-md6" >
                                                 <label>{{key}} read1碱基质量分布图：</label>
                                                 <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/{{key}}/read1.base_quality.png"/>
@@ -132,8 +130,8 @@
     {% block js %}
     <script>
         table_function();
-        base_content();
-        base_quality();
+        tab1();
+        tab2();
         icon_append();
     </script>
     {% endblock %}

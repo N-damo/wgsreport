@@ -19,7 +19,7 @@
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
                                         <form class="layui-form">
-                                            <select id='sample_selected' lay-filter='sample_selected'>
+                                            <select id='tab1' lay-filter='tab1'>
                                                 {% for key in dict_sub %}
                                                 <option value={{key}} name={{key}} selected>{{key}}</option>
                                                 {% endfor %}
@@ -28,7 +28,7 @@
                                     </div>
                                     {% for key in dict_sub %}
                                     <div class="layui--col-xs12">                                        
-                                        <div id='marker-{{key}}' class='marker-quater'>
+                                        <div id='tab1-{{key}}' class='tab1-quater'>
                                             <div class="layui-row layui-col-space20">
                                                 <div class="layui-col-md6" >
                                                     <label>{{key}} SNP标记位点染色体分布：</label>
@@ -53,7 +53,7 @@
                                 <div class="layui-row">
                                     <div class="layui-col-xs12">
                                         <form class="layui-form">
-                                            <select id='circos' lay-filter='circos'>
+                                            <select id='tab2' lay-filter='tab2'>
                                                 {% for key in dict_sub %}
                                                 <option value={{key}} name={{key}} selected>{{key}}</option>
                                                 {% endfor %}
@@ -63,7 +63,7 @@
                                     </div>
                                     {% for key in dict_sub %}
                                     <div class="layui-col-xs12">                                        
-                                        <div id='circos-{{key}}' class='circos-quater'>
+                                        <div id='tab2-{{key}}' class='tab2-quater'>
                                             <div class="layui-row">
                                                 <div class="layui-col-md6" >
                                                     <label>{{key}} SNP标记位点染色体分布：</label>
@@ -81,7 +81,7 @@
                                     </div>                                                   
                                     {% endfor %}  
                                     <div class="layui-col-xs12">                                        
-                                        <div id='circos-all' class='circos-quater'>
+                                        <div id='tab2-all' class='tab2-quater'>
                                             <div class="layui-row layui-col-space20">
                                                 <div class="layui-col-md6" >
                                                     <label>all SNP标记位点染色体分布：</label>
@@ -105,9 +105,9 @@
 {%endblock%}
 {%block js%}
 <script>
-table_function;
-marker_function();
-circos_function();
+table_function();
+tab1();
+tab2();
 icon_append();
 </script>
 {%endblock%}

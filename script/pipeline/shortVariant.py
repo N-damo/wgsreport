@@ -139,15 +139,14 @@ class ShortVariant(object):
             f.write('wait ;')
 
     def asnoerror(self):
-        working_space = os.path.basename(self.working_space)
-        with open(os.path.join(working_space, 'asnoerror.bat'), 'w') as f:
+        with open(os.path.join(self.working_space, 'asnoerror.bat'), 'wt') as f:
             f.write("#!/bin/bash"+'\n')
-            f.write('cd workspace'+'\n')
+            f.write('cd {workspace}'.format(workspace=os.path.join(self.working_space,'workspace'))+'\n')
             f.write('{gatherpostname}.bat mid_hmmgl | {postimp} final | sh'.format(
                 gatherpostname=self.gatherpostname, postimp=self.postimp)+'\n')
             #f.write('vcftools --gzvcf final_all.vcf.gz --recode --snps /share/data1/tmp/gwas-rsid.txt -c |bgzip > {batch}_report.vcf.gz'.format(batch=working_space)+'\n')
             f.write('mv final_all.vcf.gz {batch}.vcf.gz'.format(
-                batch=working_space)+'\n')
+                batch=self.working_space)+'\n')
 
     def ssh_check(self):
         logging.debug('host name check.')
@@ -158,15 +157,10 @@ class ShortVariant(object):
     def run_qsub_step1_step2(self):
         assert self.ssh_check() == 'guomai1', 'please login to guomai1 firstly'
         job_ID = []
-        os.chdir(self.working_space)
-        logging.debug('changing working directory to your provide {}\n'.format(
-            self.working_space))
-        if os.path.exists('gm.log'):
-            os.remove('gm.log')
         logging.debug('echo begin step1')
         for sample in self.groups:
             cmd = 'qsub {sample}.bat ;'.format(
-                sample=sample)
+                sample=os.path.join(self.working_space,sample))
             logging.debug(cmd)
             p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
             step1_ID = p.communicate()[0].split()[2]
@@ -176,7 +170,7 @@ class ShortVariant(object):
             _ = set(job_ID) & set(qstat_ID)
             if len(_) == 0:
                 logging.debug('echo end step1')
-                cmd = 'qsub genotype.bat'
+                cmd = 'qsub {genotype}'.format(genotype=os.path.join(self.working_space,'genotype.bat'))
                 sys.stdout.write(cmd)
                 p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
                 step2_ID = p.communicate()[0].split()[2]
@@ -216,7 +210,7 @@ class ShortVariant(object):
             if len(_) == 0:
                 logging.debug(
                     'echo completed imputation and merge vcf,genelize final.vcf.gz locally')
-                subprocess.call('sh asnoerror.bat', shell=True)
+                subprocess.call('sh {asnoerror}'.format(asnoerror=os.path.join(self.working_space,'asnoerror.bat')), shell=True)
                 # add mtDNA haplogroup prediction
                 break
             else:
