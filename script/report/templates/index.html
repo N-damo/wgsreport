@@ -13,8 +13,8 @@
 		<style type="text/css">
 			ul{bottom: 0; top: 0;}
 			.main{margin-left: 200px; position: absolute; right: 0; left: 0;}
-			.main #view1{width: 80%; position: fixed}
-			.main > button{margin-left: 0px; margin-top: 0px;}
+			.main #view1{width: 100%; }
+			.main > button{margin-left: 0px; margin-top: 10px;}
 			.layui-layer-tips .layui-layer-content{
 				background-color: transparent;
             }
@@ -118,37 +118,44 @@
                     <p style="margin-top:50%;bottom:0;text-align: center"><a href="https://github.com/N-damo" target="_blank">Designed by Li'an Lin</a></p>
                 </li>
             </ul>
+           
+    
             <div class="layui-fluid">
                 <div class="main dynamic-navigation">
+                    <ul class="layui-nav layui-bg-blue" >
+                        <li class="layui-nav-item"><a href="http://www.guomaigene.com/home" target='_blank'>首页</a></li>
+                        <li class="layui-nav-item" ><a href="http://www.guomaigene.com/goods" target='_blank'>基因产品</a></li>
+                        <li class="layui-nav-item" ><a href="http://www.guomaigene.com/detection" target='_blank'>基因检测</a></li>
+                        <li class="layui-nav-item" ><a href="http://www.guomaigene.com/report/itemList" target='_blank'>示例报告</a></li>
+                        <li class="layui-nav-item"><a href="http://www.guomaigene.com/about" target='_blank'>关于我们</a></li>
+                        <li class="layui-nav-item"><a href="http://www.guomaigene.com/login/signIn?redirect=%2Fpersonal%2Fpersonal-info" target='_blank'>个人中心</a></li>
+                        <li class="layui-nav-item"><a href='mailto:guomaigene@gmiot.com' >反馈</a></li>
+                    </ul> 
                     <button class="layui-btn layui-btn-primary" id="left" title='收缩/展开'><i  class="layui-icon layui-icon-shrink-right" id="left_icon" ></i></button>
+
                     <div id="view1">
+                            
                         <div class="layui-row layui-col-space20">
-                            <div class="layui-col-md6 layui-col-lg12" >
-                                <ul class="layui-nav layui-bg-blue" style="margin-left:200px;">
-                                    <li class="layui-nav-item"><a href="">首页</a></li>
-                                    <li class="layui-nav-item" ><a href="">基因产品</a></li>
-                                    <li class="layui-nav-item" ><a href="">基因检测</a></li>
-                                    <li class="layui-nav-item" ><a href="">示例报告</a></li>
-                                    <li class="layui-nav-item"><a href="">关于我们</a></li>
-                                    <li class="layui-nav-item"><a href="">个人中心</a></li>
-                                </ul> 
+                            <div id='content' class="layui-col-xs12 layui-col-lg12"  style='margin-top: -30px;margin-left:60px;'>
+                                <iframe src='page/项目背景/background.html' name="myFrame" croling="yes" frameborder="0" width="90%" height="100%"></iframe>
                             </div>
-                            <div class="layui-col-md6 layui-col-lg11">
-                                <a class="layui-btn" style="float: right;margin-top:20px;margin-bottom: 100px;" href='mailto:guomaigene@gmiot.com'>report</a>
-                            </div>
-                            <div class="layui-col-xs12 layui-col-lg12"  style='height:650px;margin-top: -120px;margin-left:50px;'>
-                                <iframe src='page/项目背景/background.html' name="myFrame" croling="yes" frameborder="0" width="100%" height="100%"></iframe>
-                            </div>
-                            <div class="layui-col-xs12">
-                                <div class="layui-container" style='margin-left: 50%;margin-right: 40%'>国脉生物科技有限公司</div>
+                            <div class="layui-col-xs12 layui-col-lg12" style="background-color: darkgrey;color: white;font-size: 15px;">
+                                <div class="layui-container" style='margin-left: 50%;margin-right: 40%;'>国脉生物科技有限公司</div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
-   
+
+<script>
+var $=layui.jquery;
+var h=$(window).height();
+$('#content').height(h);
+</script>
+
 <script>
 var form=layui.form, $=layui.jquery;
 form.render();
