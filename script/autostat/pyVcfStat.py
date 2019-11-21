@@ -9,6 +9,8 @@ import sys
 import matplotlib.pyplot as plt
 import shutil
 import json
+from gprofiler import GProfiler
+
 """
 in-house script to stat snp and indel distribution.Typically, the vcf should annotated by annovar,it should annotated with 1000genome database and refGene database.
 if the vcf contatin multi-allelic snp,the statistic result will be not very accuracy. Maybe you can compare it with RTG.jar VCFSTATS tools to check your result if you needed.
@@ -32,14 +34,14 @@ class VcfStat(object):
                 'frameshift_block_substitution', 'nonframeshift_insertion', 'nonframeshift_deletion', 'nonframeshift_block_substitution', 'ExonicFunc_Unknown']
     #total_col = list(set(snp_col + indel_col + func_col))
 
-    def __init__(self, vcf, variant_type, dir):
+    def __init__(self, vcf, variant_type, module):
         self.vcf = os.path.abspath(vcf)
         self.variant_type = variant_type
-        self.dir = dir
-        if os.path.exists(self.dir):
+        self.module = module
+        if os.path.exists(self.module):
             pass
         else:
-            os.mkdir(self.dir)
+            os.mkdir(self.module)
         self.format_stat()
 
     def snp_or_indel(self, ref: str, alt: tuple) -> str:
@@ -94,6 +96,7 @@ class VcfStat(object):
             source_dict[sample]['ExonicFunc_Unknown'] = 0
             source_dict[sample]['depth'] = []
             source_dict[sample]['quality'] = []
+            source_dict[sample]['gene'] = []
         return source_dict
 
     # def snp_mnp_deletion_insertion_indel(self,ref:str,alt:str):
@@ -172,13 +175,16 @@ class VcfStat(object):
                 #kilogenome_ALL = rec.info['ALL.sites.2015_08']
                 Func_refGene = rec.info['Func.refGene'][0]
                 ExonicFunc_refGene = rec.info['ExonicFunc.refGene'][0]
+                gene=rec.info['Gene.refGene'][0]
+                
             except KeyError:
                 #kilogenome_ALL = 'error'
                 Func_refGene = 'error'
                 ExonicFunc_refGene = 'error'
+                gene='error'
                 # print(
                 #     'can not find ALL.sites.2015_08 or Func.refGene or ExonicFunc.refGene.The relative record will be 0.\n')
-
+            print(gene)
             if self.snp_or_indel(ref, alt) == self.variant_type:
                 self.snp_or_indel_record += 1
                 if filter_ == 'PASS':
@@ -200,9 +206,10 @@ class VcfStat(object):
                             samples_stat[sampleRecord.name]['Missing genotype'] += 1
                             continue
                         else:
+                            if gene not in samples_stat[sampleRecord.name]['gene'] and gene.find('x3b') == -1:
+                                samples_stat[sampleRecord.name]['gene'].append(gene)
                             samples_stat[sampleRecord.name]['depth'].append(DP)
-                            samples_stat[sampleRecord.name]['quality'].append(
-                                GQ)
+                            samples_stat[sampleRecord.name]['quality'].append(GQ)
                             samples_stat[sampleRecord.name]['Total_{}s'.format(
                                 self.variant_type)] += 1  # EUQAL TO TOTALINSERT + TOTALDELETE
                             if self.variant_type == 'INDEL':
@@ -299,6 +306,37 @@ class VcfStat(object):
                 samples_stat[sample]['Passing filter']
         return samples_stat
 
+    def get_gene_list(self,samples_stat):
+        for sample in samples_stat:
+            gene=samples_stat[sample]['gene']
+            #if len(gene)=
+            #print(gene)
+            gp = GProfiler(
+                user_agent='ExampleTool', #optional user agent
+                return_dataframe=True, #return pandas dataframe or plain python structures    
+            )
+            df=gp.profile(organism='hsapiens',
+            query=gene)
+            df.to_csv('{module}/{sample}/GO_FuncTerm.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
+            df=gp.convert(organism='hsapiens',
+            query=gene,
+            target_namespace='ENTREZGENE_ACC')
+            df.to_csv('{module}/{sample}/Entrez_Gene_converted.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
+            with open('{module}/{sample}/gene_list.txt'.format(module=self.module,sample=sample),'wt') as f:
+                f.write('\n'.join(gene))
+
+# df=pd.read_csv('3.SNP/T1805007_10X/GO_FuncTerm.csv')
+# df['log_pvalue']=-np.log10(df['p_value'])
+# df=df.sort_values('log_pvalue',ascending=False)
+# df['label']=df['name']+'  '+df['native']
+# plt.figure(figsize=(10,10))
+# ax=plt.subplot(111)
+
+# ax.barh('label','log_pvalue',data=df.loc[0:20,],color='skyblue')
+# ax.set_xlabel('-log10(P_value)')
+# ax.set_ylabel('Function',labelpad=50)
+# ax.set_title('GO enrichment analysis')
+
     def format_stat(self):
         samples_stat = self.parse_vcf()
         df = pd.DataFrame.from_dict(samples_stat, orient='index')
@@ -309,21 +347,22 @@ class VcfStat(object):
         else:
             distribution = df[self.indel_col]
         function = df[self.func_col]
-        distribution.to_csv('{}/{}.stat.csv'.format(self.dir,
+        distribution.to_csv('{}/{}.stat.csv'.format(self.module,
                                                     self.variant_type), index=False, header=True)  # sample level
-        function.to_csv('{}/{}.func.csv'.format(self.dir, self.variant_type),
+        function.to_csv('{}/{}.func.csv'.format(self.module, self.variant_type),
                         index=False, header=True)  # sample level
         self.indel_length_format(samples_stat, 'Deletion')
         self.indel_length_format(samples_stat, 'Insertion')
         self.site_depth_acumulative_plot(samples_stat, 'depth')
         self.site_depth_acumulative_plot(samples_stat, 'quality')
+        self.get_gene_list(samples_stat)
 
     def site_depth_acumulative_plot(self, samples_stat, stat):
         # with open('sample_stats.json','wt') as f:
         #     json.dump(samples_stat,f)
         for sample in samples_stat:
             try:
-                os.mkdir(os.path.join(self.dir, sample))
+                os.mkdir(os.path.join(self.module, sample))
             except OSError:
                 pass
             depth = samples_stat[sample][stat]
@@ -347,10 +386,10 @@ class VcfStat(object):
                 self.variant_type))
             plt.title('{} {} acumulative'.format(self.variant_type, stat))
             plt.savefig("{module}/{sample}/{stat}_acumulative.png".format(
-                module=self.dir, sample=sample, stat=stat), format='png', bbox_inches='tight', dpi=200)
+                module=self.module, sample=sample, stat=stat), format='png', bbox_inches='tight', dpi=200)
             plt.close()
             df2 = df2[[stat, 'acumulative']]
-            df2.to_csv('{module}/{sample}/{prefix}_acumulative.csv'.format(module=self.dir,
+            df2.to_csv('{module}/{sample}/{prefix}_acumulative.csv'.format(module=self.module,
                                                                            sample=sample, prefix=stat), index=False, header=True)
 
     def indel_length_format(self, samples_stat, stat):
@@ -358,7 +397,7 @@ class VcfStat(object):
             indel_collect = nesteddict()
             for sample in samples_stat:
                 try:
-                    os.mkdir(os.path.join(self.dir, sample))
+                    os.mkdir(os.path.join(self.module, sample))
                 except OSError:
                     pass
 
@@ -373,7 +412,7 @@ class VcfStat(object):
                 indel_length_distribution = indel_length_distribution.rename(
                     columns={'index': stat, stat: 'count'})
                 indel_length_distribution.to_csv('{module}/{sample}/{stat}_distribution.csv'.format(
-                    module=self.dir, sample=sample, stat=stat), index=False, header=True)
+                    module=self.module, sample=sample, stat=stat), index=False, header=True)
                 self.indel_length_plot(indel_length_distribution, stat, sample)
                 self.indel_length_cumulative_plot(
                     indel_length_distribution, stat, sample)
@@ -386,7 +425,7 @@ class VcfStat(object):
         plt.ylabel('count')
         plt.title('{} length distribution'.format(prefix))
         plt.savefig("{module}/{sample}/{prefix}.length_distribution.png".format(
-            module=self.dir, sample=sample, prefix=prefix), format='png')
+            module=self.module, sample=sample, prefix=prefix), format='png')
         plt.close()
 
     def indel_length_cumulative_plot(self, df, prefix, sample):
@@ -411,10 +450,10 @@ class VcfStat(object):
         plt.ylabel('acumulative proportion(%)')
         plt.title('{} length acumulative'.format(prefix))
         plt.savefig("{module}/{sample}/{prefix}.length_acumulative.png".format(
-            module=self.dir, sample=sample, prefix=prefix), bbox_inches='tight', dpi=200, format='png')
+            module=self.module, sample=sample, prefix=prefix), bbox_inches='tight', dpi=200, format='png')
         plt.close()
         df = df[[prefix, 'acumulative']]
-        df.to_csv('{module}/{sample}/{prefix}_acumulative.csv'.format(module=self.dir,
+        df.to_csv('{module}/{sample}/{prefix}_acumulative.csv'.format(module=self.module,
                                                                       sample=sample, prefix=prefix), index=False, header=True)
 
 

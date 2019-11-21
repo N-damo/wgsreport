@@ -1,0 +1,46 @@
+{%extends '项目背景/background.html' %}
+{%block background%}
+<h1>基因功能注释</h1>
+<p>基因组注释(Genome annotation) 是利用生物信息学方法和工具，对基因组所有基因的生物学功能进行高通量注释，是当前功能基因组学研究的一个热点。
+    在获得基因的序列结构后，我们希望进一步获得基因的功能信息，一般的分析方式是在已经公布的基因功能数据库中寻找高度同源的序列，
+    利用diamond软件等将基因序列和蛋白序列进行同源比对，确定基因的功能。
+</p>
+{%endblock%}
+{%block content%}
+<div class="layui-row layui-col-space20">
+    <h2>数据库介绍</h2>
+    <div class="layui-col-xs12">
+        <h3 class="title">NR</h3>
+        <p>NR库，全称non-redundant proteins，是一个非冗余的蛋白质功能序列数据库，整合了包括NCBI Refseq、NCBI protein、Swiss-Prot等常用蛋白序列库。完整的NR数据库的蛋白序列和预先构建好的BLAST索引可以从NCBI的ftp服务器上下载得到，地址如下：https://ftp.ncbi.nlm.nih.gov/blast/db/FASTA/</p>
+    </div>
+    <div class="layui-col-xs12">
+        <h3 class="title">UniProt</h3>
+        <p>UniProt（http://www.uniprot.org）是EMBL-EBI旗下关于蛋白质序列的数据库，其中主要的是Swiss-Prot（人工注释与审核）和TrEMBL（自动注释、无审核）这两大数据库，在一般的测序项目中，基因功能注释环节都会与这两个数据库进行比对。</p>
+    </div>
+    <div class="layui-col-xs12">
+        <h3 class="title">KEGG</h3>
+        <p>KEGG（http://www.kegg.jp/）数据库提供与代谢路径、疾病等相关的各种信息，其中KEGG Pathway通过图片及KGML语言对代谢通路进行了形象地描述，而KEGG Orthology则将KEGG Pathway每个图中的元素与一个KO号关联起来，可以通过KOBAS2.0等软件对序列进行KEGG注释及富集性分析。</p>
+    </div>
+    <div class="layui-col-xs12">
+        <h3 class="title">GO</h3>
+        <p>GO（Gene Ontology, http://geneontology.org/）基因本体论，就是将所有物种的功能进行类似聚类的处理，从广谱的角度来谈论基因功能并划分层次，包括了：细胞组分（cellular component），细胞的每个部分和细胞外环境；分子功能（molecular function），可以描述为分子水平的活性（activity），如催化（catalytic）或结合（binding）活性；生物过程（biological process），生物学过程系指由一个或多个分子功能有序组合而产生的系列事件。其定义有广义和狭义之分，可以区分为泛指和特指。一般规律是，一个过程是由多个不同的步骤组成。</p>
+    </div>
+    <div class="layui-col-xs12">
+        <h3 class="title">EggNOG</h3>
+        <p>EggNOG（http://eggnogdb.embl.de/#/app/home）数据库是对NCBI COG、NCBI KOG和NOG进行扩展，并包含了真核生物信息，也可以实现COG/KOG的功能注释，主要特色是蛋白质相互作用注释。EggNOG升级到4.0以后提供基于HMM隐马尔可夫谱的分析，并提供了更细致的OG分析，可根据物种所属的clade选择参考数据集，可以有效地降低计算量，另一个特色就是提供了GO以及其它注释信息（KEGG/COG/SMART）关联。</p>
+    </div>
+    <div class="layui-col-xs12">
+        <h3 class="title">Pfam</h3>
+        <p>Pfam（http://pfam.xfam.org/）数据库是一系列蛋白质家族的集合。一个蛋白质通常由多个结构域（domains）组成，Pfam将蛋白质按照domain序列、结构和HMM轮廓等编成索引（entries），再将多个相关的索引整合为集群，称为一个clan。</p>
+    </div>
+    <div class="layui-col-xs12">
+        <h3 class="title">InterPro</h3>
+        <p>InterPro（http://www.ebi.ac.uk/interpro/）是一个一站式蛋白质检索数据库，它首先按蛋白家族、结构域、功能位点等不同层面将数据划分成多个子库，各子库之间存在广泛的关联，并可以根据编码氨基酸序列来预测新蛋白质/基因的功能。</p>
+    </div>
+</div>
+{%endblock%}
+{%block js%}
+<script>
+icon_append();
+</script>
+{%endblock%}

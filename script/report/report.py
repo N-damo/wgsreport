@@ -53,7 +53,8 @@ class Index(object):
 
 
 class Introduction(object):
-    def __init__(self):
+    def __init__(self,info):
+        self.info=info
         self.background()
         self.general_stat()
         self.sample_info()
@@ -83,7 +84,23 @@ class Introduction(object):
         return HTML(template, 'page/项目背景/general_stat.html', dict_sub=dict_sub).render__()
 
     def sample_info(self, template='项目背景/sample_info.html'):
-        return HTML(template, 'page/项目背景/sample_info.html').render__()
+        dict_sub=defaultdict(list)
+        with open(self.info,'rt') as f:
+            for k,v in enumerate(f):
+                line=v.strip().split()
+                if k != 0:
+                    #working_directory=line[0]
+                    sample_name=line[4]
+                    adapter=line[2]
+                    #library=line[3]
+                    fq1=os.path.basename(line[0])
+                    fq2=os.path.basename(line[1])
+                    dict_sub[sample_name].append(("adapter",adapter))
+                    dict_sub[sample_name].append(("fq1",fq1))
+                    dict_sub[sample_name].append(("fq2",fq2))
+                else:
+                    pass
+        return HTML(template, 'page/项目背景/sample_info.html',dict_sub={'dict_sub':dict_sub,'sample_list':list(dict_sub.keys())}).render__()
 
     def software_used(self, template='项目背景/software_used.html'):
         dict_sub = {}
@@ -253,19 +270,32 @@ class Marker(object):
         dict_sub = snp['Samples'].to_list()
         return HTML(template, 'page/标记分布可视化/marker_stat.html', dict_sub={'dict_sub': dict_sub}).render__()
 
+class Annotation(object):
+    def __init__(self):
+        self.background()
+        self.annotation()
 
-def html_report():
+    def background(self,template='基因功能注释/background.html'):
+        return HTML(template,'page/基因功能注释/background.html').render__()
+
+    def annotation(self,template='基因功能注释/annotation.html'):
+        return HTML(template,'page/基因功能注释/annotation.html').render__()
+
+
+def html_report(sample_info):
     subprocess.call(
         'cp -r {dir}/layui {dir}/img ./'.format(dir=base_dir), shell=True)
     Index()
-    Introduction()
+    Introduction(sample_info)
     Data_qc()
     BWA_mem()
     SNV()
     SV()
     CNV()
     Marker()
+    Annotation()
 
 
 if __name__ == '__main__':
-    html_report()
+    sample_info=sys.argv[1]
+    html_report(sample_info)

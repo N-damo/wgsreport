@@ -1,0 +1,265 @@
+{%extends '测序数据质控/qc.html' %}
+{%block background%}
+<h1>基因组功能注释</h1>
+<p>基因组注释(Genome annotation) 是利用生物信息学方法和工具，对基因组所有基因的生物学功能进行高通量注释，是当前功能基因组学研究的一个热点。在获得基因的序列结构后，我们希望进一步获得基因的功能信息，一般的分析方式是在已经公布的基因功能数据库中寻找高度同源的序列，利用diamond软件等将基因序列和蛋白序列进行同源比对，确定基因的功能。</p>
+{%endblock%}
+{%block parameter%}
+<h3>参数设置</h3>
+<table class="layui-table" lay-filter='demo'>
+    <thead>
+        <tr>
+        <th lay-data={align:"center",width:150,sort:true,field:"注释类型"}>注释类型</th>
+        <th lay-data={align:"center",width:150,sort:true,field:"比对软件"}>比对软件</th>
+        <th lay-data={align:"center",width:150,sort:true,field:"数据库"}>数据库</th>
+        <th lay-data={align:"center",width:150,sort:true,field:"E-value"}>E-value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>NR注释</td>
+            <td>Diamond</td>
+            <td>NR</td>
+            <td>1e-5</td>
+        </tr>
+        <tr>
+            <td>UniProt注释</td>
+            <td>Diamond</td>
+            <td>UniProt</td>
+            <td>1e-5</td>
+        </tr>
+        <tr>
+            <td>GO注释</td>
+            <td>Diamond</td>
+            <td>Gene Ontology</td>
+            <td>1e-5</td>
+        </tr>
+        <tr>
+            <td>KEGG注释</td>
+            <td>Diamond</td>
+            <td>KEGG</td>
+            <td>1e-5</td>
+        </tr>
+        <tr>
+            <td>EggNOG注释</td>
+            <td>Eggnog-mapper</td>
+            <td>EggNOG</td>
+            <td>1e-5</td>
+        </tr>
+        <tr>
+            <td>Pfam注释</td>
+            <td>InterProScan</td>
+            <td>Pfam</td>
+            <td>1e-5</td>
+        </tr>
+        <tr>
+            <td>InterPro注释</td>
+            <td>InterProScan</td>
+            <td>InterPro</td>
+            <td>1e-5</td>
+        </tr>
+    </tbody>
+</table>
+{%endblock%}
+{%block tab%}
+<ul class="layui-tab-title">
+    <li>注释信息</li><li>GO分类统计</li><li>GO分类直方图</li><li>KEGG分类统计</li><li>KEGG分类直方图</li>
+    <li>EggNOG分类统计</li><li>EggNOG分类直方图</li><li>Pfam分类统计</li><li>Pfam分类直方图</li>
+</ul>
+<div class="layui-tab-content">
+    <div id='注释信息' class="layui-tab-item layui-show">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='GO分类统计' class="layui-tab-item">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='GO分类直方图' class="layui-tab-item">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='tab1' lay-filter='tab1' >
+                        {% for key in dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                        <option value='all' name='all' selected>all</option>
+                    </select> 
+                </form>  
+            </div>
+            
+            {% for key in dict_sub %}
+            <div class="layui-row layui-col-space20">                                        
+                <div id='tab1-{{key}}' class='tab1-quater'>
+                    <div class="layui-col-md6" >
+                        <label>{{key}} GO分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/{{key}}/read1.base_content.png"/>
+                    </div>     
+                    <div>
+                        <p>注：</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            {% endfor %}
+        </div>
+    </div>
+    <div id='KEGG分类统计' class="layui-tab-item">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='KEGG分类直方图' class="layui-tab-item">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='tab1' lay-filter='tab1' >
+                        {% for key in dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                        <option value='all' name='all' selected>all</option>
+                    </select> 
+                </form>  
+            </div>
+            
+            {% for key in dict_sub %}
+            <div class="layui-row layui-col-space20">                                        
+                <div id='tab1-{{key}}' class='tab1-quater'>
+                    <div class="layui-col-md6" >
+                        <label>{{key}} KEGG分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/{{key}}/read1.base_content.png"/>
+                    </div>     
+                    <div>
+                        <p>注：</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id='EggNOG分类统计' class="layui-tab-item">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='EggNOG分类直方图' class="layui-tab-item">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='tab1' lay-filter='tab1' >
+                        {% for key in dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                        <option value='all' name='all' selected>all</option>
+                    </select> 
+                </form>  
+            </div>
+            
+            {% for key in dict_sub %}
+            <div class="layui-row layui-col-space20">                                        
+                <div id='tab1-{{key}}' class='tab1-quater'>
+                    <div class="layui-col-md6" >
+                        <label>{{key}} EggNOG分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/{{key}}/read1.base_content.png"/>
+                    </div>     
+                    <div>
+                        <p>注：</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            {% endfor %}
+        </div>
+    </div>
+
+    <div id='Pfam分类统计' class="layui-tab-item">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='Pfam分类直方图' class="layui-tab-item">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='tab1' lay-filter='tab1' >
+                        {% for key in dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                        <option value='all' name='all' selected>all</option>
+                    </select> 
+                </form>  
+            </div>
+            
+            {% for key in dict_sub %}
+            <div class="layui-row layui-col-space20">                                        
+                <div id='tab1-{{key}}' class='tab1-quater'>
+                    <div class="layui-col-md6" >
+                        <label>{{key}} Pfam分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../1.qc/{{key}}/read1.base_content.png"/>
+                    </div>     
+                    <div>
+                        <p>注：</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            {% endfor %}
+        </div>
+    </div>
+    
+</div>
+{%endblock%}
+{%block js%}
+<script>
+icon_append();
+</script>
+{%endblock%}
