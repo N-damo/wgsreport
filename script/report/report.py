@@ -12,7 +12,13 @@ import subprocess
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-
+def df_tuple(sub, df):
+    for sample in df['Samples']:
+        sample_df = df[df['Samples'] == sample]
+        for col in df.columns[1:]:
+            value = sample_df[col].values[0]
+            sub[sample].append((re.sub(r'\s+', '_', col), value))
+    return sub
 class HTML(object):
 
     def __init__(self, template, prefix, dict_sub=None, template_dir=os.path.join(base_dir, 'templates')):
@@ -35,7 +41,8 @@ class HTML(object):
             content = env.render(self.dict_sub)
         else:
             content = env.render()
-        static_file = open(self.prefix, 'wt', encoding='utf-8').write(content)
+        open(self.prefix, 'wt', encoding='utf-8').write(content)
+      
 
     def dir_test(self):
         if os.path.exists('page'):
@@ -89,10 +96,8 @@ class Introduction(object):
             for k,v in enumerate(f):
                 line=v.strip().split()
                 if k != 0:
-                    #working_directory=line[0]
                     sample_name=line[4]
                     adapter=line[2]
-                    #library=line[3]
                     fq1=os.path.basename(line[0])
                     fq2=os.path.basename(line[1])
                     dict_sub[sample_name].append(("adapter",adapter))
@@ -119,21 +124,14 @@ class Data_qc(object):
     def background(self, template='测序数据质控/background.html'):
         return HTML(template, 'page/测序数据质控/background.html').render__()
 
-    def qc_tuple(self, sub, df):
-        for sample in df['Samples']:
-            sample_df = df[df['Samples'] == sample]
-            for col in df.columns[1:]:
-                value = sample_df[col].values[0]
-                sub[sample].append((re.sub(r'\s+', '_', col), value))
-        return sub
 
     def qc(self, template='测序数据质控/qc.html'):
         dict_sub = defaultdict(list)
         fastp = pd.read_csv('1.qc/before_filtering.csv')
         sample_list = fastp['Samples'].to_list()
-        dict_sub = self.qc_tuple(dict_sub, fastp)
+        dict_sub = df_tuple(dict_sub, fastp)
         fastp = pd.read_csv('1.qc/after_filtering.csv')
-        dict_sub = self.qc_tuple(dict_sub, fastp)
+        dict_sub = df_tuple(dict_sub, fastp)
 
         return HTML(template, 'page/测序数据质控/qc.html', dict_sub={'sample_list': sample_list, 'dict_sub': dict_sub}).render__()
 
@@ -143,13 +141,6 @@ class BWA_mem(object):
         self.background()
         self.mapping_stat()
 
-    def bwa_tuple(self, sub, df):
-        for sample in df['Samples']:
-            sample_df = df[df['Samples'] == sample]
-            for col in df.columns[1:]:
-                value = sample_df[col].values[0]
-                sub[sample].append((re.sub(r'\s+', '_', col), value))
-        return sub
 
     def background(self, template='基因组比对/background.html'):
         return HTML(template, 'page/基因组比对/background.html').render__()
@@ -158,7 +149,7 @@ class BWA_mem(object):
         dict_sub = defaultdict(list)
         bwa = pd.read_csv('2.mapping/mapping_stat.csv')
         sample_list = bwa['Samples'].to_list()
-        dict_sub = self.bwa_tuple(dict_sub, bwa)
+        dict_sub = df_tuple(dict_sub, bwa)
         return HTML(template, 'page/基因组比对/mapping_stat.html', dict_sub={'sample_list': sample_list, 'dict_sub': dict_sub}).render__()
 
 
@@ -167,13 +158,6 @@ class SNV(object):
         self.background()
         self.variant_stat()
 
-    def snv_tuple(self, sub, df):
-        for sample in df['Samples']:
-            sample_df = df[df['Samples'] == sample]
-            for col in df.columns[1:]:
-                value = sample_df[col].values[0]
-                sub[sample].append((re.sub(r'\s+', '_', col), value))
-        return sub
 
     def background(self, template='短变异位点检测/background.html'):
         return HTML(template, 'page/短变异位点检测/background.html').render__()
@@ -182,20 +166,20 @@ class SNV(object):
         snp_dict_sub = defaultdict(list)
         snp = pd.read_csv('3.SNP/SNP.stat.csv')
         sample_list = snp['Samples'].to_list()
-        snp_dict_sub = self.snv_tuple(snp_dict_sub, snp)
+        snp_dict_sub = df_tuple(snp_dict_sub, snp)
 
         indel_dict_sub = defaultdict(list)
         indel = pd.read_csv('4.INDEL/INDEL.stat.csv')
-        indel_dict_sub = self.snv_tuple(indel_dict_sub, indel)
+        indel_dict_sub = df_tuple(indel_dict_sub, indel)
 
         snp_annotation_func = defaultdict(list)
         snp_annotation = pd.read_csv('3.SNP/SNP.func.csv')
-        snp_annotation_func = self.snv_tuple(
+        snp_annotation_func = df_tuple(
             snp_annotation_func, snp_annotation)
 
         indel_annotation_func = defaultdict(list)
         indel_annotation = pd.read_csv('4.INDEL/INDEL.func.csv')
-        indel_annotation_func = self.snv_tuple(
+        indel_annotation_func = df_tuple(
             indel_annotation_func, indel_annotation)
 
         return HTML(template, 'page/短变异位点检测/variant_stat.html', dict_sub={'sample_list': sample_list, 'snp_dict_sub': snp_dict_sub, 'indel_dict_sub': indel_dict_sub, 'snp_annotation_func': snp_annotation_func, 'indel_annotation_func': indel_annotation_func}).render__()
@@ -206,13 +190,6 @@ class SV(object):
         self.background()
         self.sv_stat()
 
-    def sv_tuple(self, sub, df):
-        for sample in df['Samples']:
-            sample_df = df[df['Samples'] == sample]
-            for col in df.columns[1:]:
-                value = sample_df[col].values[0]
-                sub[sample].append((re.sub(r'\s+', '_', col), value))
-        return sub
 
     def background(self, template='SV变异检测/background.html'):
         return HTML(template, 'page/SV变异检测/background.html').render__()
@@ -221,7 +198,7 @@ class SV(object):
         dict_sub = defaultdict(list)
         sv = pd.read_csv('5.SV/sv_stat.csv')
         sample_list = sv['Samples'].to_list()
-        dict_sub = self.sv_tuple(dict_sub, sv)
+        dict_sub = df_tuple(dict_sub, sv)
         return HTML(template, 'page/SV变异检测/sv_stat.html', dict_sub={'dict_sub': dict_sub, 'sample_list': sample_list}).render__()
 
 
@@ -230,13 +207,6 @@ class CNV(object):
         self.background()
         self.cnv_stat()
 
-    def cnv_tuple(self, sub, df):
-        for sample in df['Samples']:
-            sample_df = df[df['Samples'] == sample]
-            for col in df.columns[1:]:
-                value = sample_df[col].values[0]
-                sub[sample].append((re.sub(r'\s+', '_', col), value))
-        return sub
 
     def background(self, template='CNV变异检测/background.html'):
         return HTML(template, 'page/CNV变异检测/background.html').render__()
@@ -245,16 +215,10 @@ class CNV(object):
         cnv = pd.read_csv('6.CNV/cnv_stat.csv')
         sample_list = cnv['Samples'].to_list()
         dict_sub = defaultdict(list)
-        dict_sub = self.cnv_tuple(dict_sub, cnv)
+        dict_sub = df_tuple(dict_sub, cnv)
         return HTML(template, 'page/CNV变异检测/cnv_stat.html', dict_sub={'dict_sub': dict_sub, 'sample_list': sample_list}).render__()
 
 
-# class SSR(object):
-#     def background(self,template='SSR标记分析/background.html'):
-#         return HTML(template).render__()
-
-#     def ssr_stat(self,template='SSR标记分析/ssr_stat.html'):
-#         return HTML(template).render__()
 
 class Marker(object):
     def __init__(self):
@@ -271,20 +235,42 @@ class Marker(object):
         return HTML(template, 'page/标记分布可视化/marker_stat.html', dict_sub={'dict_sub': dict_sub}).render__()
 
 class Annotation(object):
-    def __init__(self):
+    def __init__(self,sample_list):
+        self.sample_list=sample_list
         self.background()
-        self.annotation()
+        self.denovo_annotation()
+        self.pathway()
 
     def background(self,template='基因功能注释/background.html'):
         return HTML(template,'page/基因功能注释/background.html').render__()
 
-    def annotation(self,template='基因功能注释/annotation.html'):
-        return HTML(template,'page/基因功能注释/annotation.html').render__()
+    def denovo_annotation(self,template='基因功能注释/denovo_annotation.html'):
+        return HTML(template,'page/基因功能注释/denovo_annotation.html').render__()
+    
+    def pathway(self,template='基因功能注释/pathway.html'):
+        
+        return HTML(template,'page/基因功能注释/pathway.html',dict_sub={'dict_sub':self.sample_list}).render__()
+
+
+
+def get_sample_list(sample_info):
+    with open(sample_info,'rt') as f:
+        sample_list=[]
+        for k,v in enumerate(f):
+            if k==0:
+                continue
+            else:
+                line=v.strip().split()
+                sample=line[-1]
+                if sample not in sample_list:
+                    sample_list.append(sample)
+
+    return sample_list
 
 
 def html_report(sample_info):
-    subprocess.call(
-        'cp -r {dir}/layui {dir}/img ./'.format(dir=base_dir), shell=True)
+    sample_list=get_sample_list(sample_info)
+    subprocess.call('cp -r {dir}/layui {dir}/img ./'.format(dir=base_dir), shell=True)
     Index()
     Introduction(sample_info)
     Data_qc()
@@ -293,7 +279,7 @@ def html_report(sample_info):
     SV()
     CNV()
     Marker()
-    Annotation()
+    Annotation(sample_list)
 
 
 if __name__ == '__main__':

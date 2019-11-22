@@ -1,0 +1,118 @@
+{%extends '测序数据质控/qc.html' %}
+{%block background%}
+<h1>基因功能注释</h1>
+<p>全基因组测序将产生大量数据，此前普遍采用比对方法对对预测出来的编码基因进行功能注释，通过与各种功能数据库（NR、Swiss-Prot 、GO、KOG、KEGG）进行蛋白质比对，获取该基因的功能信息。其中GO和KEGG数据库分别在基因功能和代谢通路研究中占据重要地位。</p>
+{%endblock%}
+{%block parameter%}
+<h3>分析软件</h3>
+<p>分析软件：go:Profiler</p>
+{%endblock%}
+{%block tab%}
+<ul class="layui-tab-title">
+    <li class='layui-this'>GO分类统计</li>
+    <li >GO分类直方图</li>
+    <li >KEGG分类统计</li>
+    <li >KEGG分类直方图</li>
+</ul>
+<div class="layui-tab-content">
+    <div id='GO分类统计' class="layui-tab-item">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='GO分类直方图' class="layui-tab-item">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='tab1' lay-filter='tab1' >
+                        {% for key in dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                    </select> 
+                </form>  
+            </div>
+            
+            {% for key in dict_sub %}
+            <div class="layui-row layui-col-space20">                                        
+                <div id='tab1-{{key}}' class='tab1-quater'>
+                    <div class="layui-col-md6" >
+                        <label>{{key}} SNP GO分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../3.SNP/{{key}}/GO_FuncTerm.png"/>
+                    </div>   
+                    <div class="layui-col-md6" >
+                        <label>{{key}} INDEL GO分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../4.INDEL/{{key}}/GO_FuncTerm.png"/>
+                    </div> 
+                    <div class="layui-col-xs12">
+                        <p>注：纵坐标表示GO数据库通路类型以及分类ID编号；横坐标表示所选区域内该分类下-log10(P_value)值，越大表示富集越显著。默认展示前20位GO ID的统计信息。</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            {% endfor %}
+        </div>
+    </div>
+    <div id='KEGG分类统计' class="layui-tab-item">
+        <table class="layui-table" lay-filter='demo'>
+            <thead>
+                <tr>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id='KEGG分类直方图' class="layui-tab-item">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form" >
+                    <select id='tab2' lay-filter='tab2' >
+                        {% for key in dict_sub %}
+                        <option value='{{key}}' name='{{key}}' selected>{{key}}</option>
+                        {% endfor %}
+                    </select> 
+                </form>  
+            </div>
+            
+            {% for key in dict_sub %}
+            <div class="layui-row layui-col-space20">                                        
+                <div id='tab2-{{key}}' class='tab2-quater'>
+                    <div class="layui-col-md6" >
+                        <label>{{key}} SNP KEGG分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../3.SNP/{{key}}/KEGG_FuncTerm.png"/>
+                    </div>  
+                    <div class="layui-col-md6" >
+                        <label>{{key}} INDEL KEGG分类直方图：</label>
+                        <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: 50px" src="../../4.INDEL/{{key}}/KEGG_FuncTerm.png"/>
+                    </div> 
+                    <div class="layui-col-xs12">
+                        <p>注：纵坐标表示KEGG数据库通路类型以及分类ID编号；横坐标表示所选区域内该分类下-log10(P_value)值，越大表示富集越显著。默认展示前20位KEGG ID的统计信息。</p>
+                    </div>
+                </div>                                   
+            </div>                                                   
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block js%}
+<script>
+tab1();
+tab2();
+icon_append();
+</script>
+{%endblock%}

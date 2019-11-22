@@ -13,7 +13,7 @@
 {%endblock%}
 {%block tab%}
                         <ul class="layui-tab-title">
-                            <li class="magicalcoder-tab-title layui-this">SV数据统计</li><li class="magicalcoder-tab-title">SV长度分布</li>
+                            <li class='layui-this'>SV数据统计</li><li>SV长度分布</li>
                         </ul>
                         <div class="layui-tab-content">
                             <div id="SV数据统计" class="layui-tab-item layui-show">
@@ -49,15 +49,18 @@
                                             </select> 
                                         </form>    
                                     </div>
+                                </div>
                                     {% for key in dict_sub %}
-                                    <div class="layui-col-xs12">                           
-                                        <div id='tab1-{{key}}' class='tab1-quater'>
-                                            <div class="layui-col-xs12" >
-                                                <label >{{key}} SV长度分布图：</label>
-                                                <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../5.SV/{{key}}/sv_length_distribution.png"/>
-                                            </div>      
-                                        </div>                                   
-                                    </div>                                               
+                                    <div class="layui-row layui-col-space20">
+                                        <div class="layui-col-xs12">                           
+                                            <div id='tab1-{{key}}' class='tab1-quater'>
+                                                <div class="layui-col-xs12" >
+                                                    <label >{{key}} SV长度分布图：</label>
+                                                    <img style="width:80%;margin-top: 25px;margin-bottom: 50px;margin-right: auto;margin-left: auto;display: block" src="../../5.SV/{{key}}/sv_length_distribution.png"/>
+                                                </div>      
+                                            </div>                                   
+                                        </div>           
+                                    </div>                                    
                                     {% endfor %}  
                                     <div>
                                         <p>注： 横坐标表示SV类型的SV长度；纵坐标表示SV的数目/百分比。</p>

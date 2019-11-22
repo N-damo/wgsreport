@@ -1,6 +1,6 @@
 {%extends '测序数据质控/qc.html' %}
 {%block background%}
-<h1>基因组功能注释</h1>
+<h1>denovo 基因组功能注释</h1>
 <p>基因组注释(Genome annotation) 是利用生物信息学方法和工具，对基因组所有基因的生物学功能进行高通量注释，是当前功能基因组学研究的一个热点。在获得基因的序列结构后，我们希望进一步获得基因的功能信息，一般的分析方式是在已经公布的基因功能数据库中寻找高度同源的序列，利用diamond软件等将基因序列和蛋白序列进行同源比对，确定基因的功能。</p>
 {%endblock%}
 {%block parameter%}
@@ -60,9 +60,10 @@
     </tbody>
 </table>
 {%endblock%}
+
 {%block tab%}
 <ul class="layui-tab-title">
-    <li>注释信息</li><li>GO分类统计</li><li>GO分类直方图</li><li>KEGG分类统计</li><li>KEGG分类直方图</li>
+    <li class='layui-this'>注释信息</li><li>GO分类统计</li><li>GO分类直方图</li><li>KEGG分类统计</li><li>KEGG分类直方图</li>
     <li>EggNOG分类统计</li><li>EggNOG分类直方图</li><li>Pfam分类统计</li><li>Pfam分类直方图</li>
 </ul>
 <div class="layui-tab-content">

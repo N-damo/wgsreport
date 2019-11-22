@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import shutil
 import json
 from gprofiler import GProfiler
+import numpy as np 
 
 """
 in-house script to stat snp and indel distribution.Typically, the vcf should annotated by annovar,it should annotated with 1000genome database and refGene database.
@@ -309,33 +310,41 @@ class VcfStat(object):
     def get_gene_list(self,samples_stat):
         for sample in samples_stat:
             gene=samples_stat[sample]['gene']
-            #if len(gene)=
-            #print(gene)
-            gp = GProfiler(
-                user_agent='ExampleTool', #optional user agent
-                return_dataframe=True, #return pandas dataframe or plain python structures    
-            )
-            df=gp.profile(organism='hsapiens',
-            query=gene)
-            df.to_csv('{module}/{sample}/GO_FuncTerm.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
-            df=gp.convert(organism='hsapiens',
-            query=gene,
-            target_namespace='ENTREZGENE_ACC')
-            df.to_csv('{module}/{sample}/Entrez_Gene_converted.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
-            with open('{module}/{sample}/gene_list.txt'.format(module=self.module,sample=sample),'wt') as f:
-                f.write('\n'.join(gene))
+            if len(gene) == 0:
+                continue
+            else:
+                gp = GProfiler(user_agent='ExampleTool', return_dataframe=True)
+                df=gp.profile(organism='hsapiens',query=gene)
+                go=df[df['native'].str.contains('GO')]
+                go.to_csv('{module}/{sample}/GO_FuncTerm.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
+                self.plot_go(go,sample,'GO')
+                kegg=df[df['native'].str.contains('KEGG')]
+                kegg.to_csv('{module}/{sample}/KEGG_FuncTerm.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
+                self.plot_go(kegg,sample,'KEGG')
+                df=gp.convert(organism='hsapiens',query=gene,target_namespace='ENTREZGENE_ACC')
+                df.to_csv('{module}/{sample}/Entrez_Gene_converted.csv'.format(module=self.module,sample=sample),header=True,index=False,sep=',')
+                with open('{module}/{sample}/gene_list.txt'.format(module=self.module,sample=sample),'wt') as f:
+                    f.write('\n'.join(gene))
 
-# df=pd.read_csv('3.SNP/T1805007_10X/GO_FuncTerm.csv')
-# df['log_pvalue']=-np.log10(df['p_value'])
-# df=df.sort_values('log_pvalue',ascending=False)
-# df['label']=df['name']+'  '+df['native']
-# plt.figure(figsize=(10,10))
-# ax=plt.subplot(111)
 
-# ax.barh('label','log_pvalue',data=df.loc[0:20,],color='skyblue')
-# ax.set_xlabel('-log10(P_value)')
-# ax.set_ylabel('Function',labelpad=50)
-# ax.set_title('GO enrichment analysis')
+    def plot_go(self,df,sample,db):
+        df=df.reset_index()
+        df['log_pvalue']=-np.log10(df['p_value'].to_list())
+        df=df.sort_values('log_pvalue',ascending=False)
+        df['label']=df['name']+'  '+df['native']
+        plt.clf()
+        plt.figure(figsize=(10,10))
+        ax=plt.subplot(111)
+        ax.barh('label','log_pvalue',data=df.loc[0:20,],color=['skyblue', 'red', 'orange', 'purple', 'cyan'])
+        ax.set_xlabel('-log10(P_value)',fontsize=15)
+        ax.set_ylabel('Function',labelpad=50,fontsize=15)
+        ax.set_title('{} Enrichment Function'.format(db),fontsize=20)
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        plt.axis(ymin=0.5)
+        plt.savefig('{module}/{sample}/{db}_FuncTerm.png'.format(module=self.module,sample=sample,db=db),format='png',dpi=200,bbox_inches='tight')
+        plt.close()
+
 
     def format_stat(self):
         samples_stat = self.parse_vcf()
