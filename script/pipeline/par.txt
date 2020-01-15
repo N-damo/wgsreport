@@ -1,0 +1,8 @@
+genotypename:    test.ped
+snpname:         test.map
+indivname:       test.ped
+outputformat:    EIGENSTRAT
+genotypeoutname: test.geno
+snpoutname:      test.snp
+indivoutname:    test.ind
+familynames:     NO

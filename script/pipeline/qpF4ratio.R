@@ -1,0 +1,7 @@
+library('admixr')
+snps=eigenstrat('test')
+panel=c('Chimp','Denisova','VindijaNean','Yoruba')
+df=read.table('test.ind')
+pops=setdiff(df[,1],panel)
+result<- f4ratio(X=pops,A='Denisova',B='VindijaNean',C='Yoruba',O='Chimp',data=snps)
+write.table(result,file='qpf4ratio.txt',row.names=F,quote=F)

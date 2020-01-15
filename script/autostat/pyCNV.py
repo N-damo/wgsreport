@@ -27,8 +27,8 @@ def nesteddict():
 class CNV(object):
 
     #stat_col =['Samples','TotalDEL','TotalDUP','Total_DEL_length(bp)','Total_DUP_length(bp)','Overlapped gene']
-    stat_col = ['Samples', 'TotalDEL', 'TotalDUP', 'Overlapped gene', 'over 1KB DEL', 'over 5KB DEL', 'over 10KB DEL',
-                'over 100KB DEL', 'over 1000KB DEL', 'over 1KB DUP', 'over 5KB DUP', 'over 10KB DUP', 'over 100KB DUP', 'over 1000KB DUP']
+    stat_col = ['Samples', 'TotalDEL', 'TotalDUP', 'Overlapped_gene', 'over_1KB_DEL', 'over_5KB_DEL', 'over_10KB_DEL',
+                'over_100KB_DEL', 'over_1000KB_DEL', 'over_1KB_DUP', 'over_5KB_DUP', 'over_10KB_DUP', 'over_100KB_DUP', 'over_1000KB_DUP']
 
     def __init__(self, cnv, genecode, module):
         self.vcf = os.path.abspath(cnv)
@@ -48,8 +48,9 @@ class CNV(object):
         cnv_stat = cnv_stat.reset_index()
         cnv_stat = cnv_stat.rename(columns={'index': 'Samples'})
         cnv_stat = cnv_stat.reindex(columns=self.stat_col)
+        sample=list(self.sample_stat)[0]
         cnv_stat.to_csv(
-            '{module}/cnv_stat.csv'.format(module=self.module), index=False, header=True)
+            '{module}/{sample}cnv_stat.csv'.format(module=self.module,sample=sample), index=False, header=True)
 
     def source_dict(self, sample_list):
         samples_sv = nesteddict()
@@ -57,7 +58,7 @@ class CNV(object):
             samples_sv[sample]['Chrom'] = []
             samples_sv[sample]['Start'] = []
             samples_sv[sample]['End'] = []
-            samples_sv[sample]['Length(bp)'] = []
+            samples_sv[sample]['Length'] = []
             samples_sv[sample]['Type'] = []
             samples_sv[sample]['CN'] = []
         return samples_sv
@@ -91,7 +92,7 @@ class CNV(object):
                                         start)
                                     samples_sv[sampleRecord.name]['End'].append(
                                         end)
-                                    samples_sv[sampleRecord.name]['Length(bp)'].append(
+                                    samples_sv[sampleRecord.name]['Length'].append(
                                         cnv_length)
                                     samples_sv[sampleRecord.name]['Type'].append(
                                         sv_type)
@@ -114,7 +115,7 @@ class CNV(object):
             df['Chrom'] = samples_sv[sample]['Chrom']
             df['Start'] = samples_sv[sample]['Start']
             df['End'] = samples_sv[sample]['End']
-            df['Length(bp)'] = samples_sv[sample]['Length(bp)']
+            df['Length'] = samples_sv[sample]['Length']
             df['Type'] = samples_sv[sample]['Type']
             df['CN'] = samples_sv[sample]['CN']
             df.to_csv('{module}/{sample}/cnv_igv.seg'.format(module=self.module,
@@ -169,31 +170,31 @@ class CNV(object):
             return a['>1k'], a['>5k'], a['>10k'], a['>100k'], a['>1000k']
 
     def cnv_stat(self, df, sample, gene_count):
-        del_length = df[df['Type'] == 'DEL']['Length(bp)']
+        del_length = df[df['Type'] == 'DEL']['Length']
         delk1, delk5, delk10, delk100, delk1000 = self.stat_length_distribution(
             del_length)
-        dup_length = df[df['Type'] == 'DUP']['Length(bp)']
+        dup_length = df[df['Type'] == 'DUP']['Length']
         dupk1, dupk5, dupk10, dupk100, dupk1000 = self.stat_length_distribution(
             dup_length)
         self.sample_stat[sample]['TotalDEL'] = len(df[df['Type'] == 'DEL'])
-        self.sample_stat[sample]['over 1KB DEL'] = delk1
-        self.sample_stat[sample]['over 5KB DEL'] = delk5
-        self.sample_stat[sample]['over 10KB DEL'] = delk10
-        self.sample_stat[sample]['over 100KB DEL'] = delk100
-        self.sample_stat[sample]['over 1000KB DEL'] = delk1000
+        self.sample_stat[sample]['over_1KB_DEL'] = delk1
+        self.sample_stat[sample]['over_5KB_DEL'] = delk5
+        self.sample_stat[sample]['over_10KB_DEL'] = delk10
+        self.sample_stat[sample]['over_100KB_DEL'] = delk100
+        self.sample_stat[sample]['over_1000KB_DEL'] = delk1000
         #self.sample_stat[sample]['Total_DEL_length(bp)'] = sum(df[df['Type'] == 'DEL']['Length(bp)'])
         self.sample_stat[sample]['TotalDUP'] = len(df[df['Type'] == 'DUP'])
-        self.sample_stat[sample]['over 1KB DUP'] = dupk1
-        self.sample_stat[sample]['over 5KB DUP'] = dupk5
-        self.sample_stat[sample]['over 10KB DUP'] = dupk10
-        self.sample_stat[sample]['over 100KB DUP'] = dupk100
-        self.sample_stat[sample]['over 1000KB DUP'] = dupk1000
+        self.sample_stat[sample]['over_1KB_DUP'] = dupk1
+        self.sample_stat[sample]['over_5KB_DUP'] = dupk5
+        self.sample_stat[sample]['over_10KB_DUP'] = dupk10
+        self.sample_stat[sample]['over_100KB_DUP'] = dupk100
+        self.sample_stat[sample]['over_1000KB_DUP'] = dupk1000
         #self.sample_stat[sample]['Total_DUP_length(bp)'] = sum(df[df['Type'] == 'DUP']['Length(bp)'])
-        self.sample_stat[sample]['Overlapped gene'] = gene_count
+        self.sample_stat[sample]['Overlapped_gene'] = gene_count
 
     def cnv_plot(self, df, sample):
         plt.clf()
-        sns.violinplot(y="Length(bp)", x="Type", hue='Type',
+        sns.violinplot(y="Length", x="Type", hue='Type',
                        data=df, palette="Pastel1")
         plt.legend(bbox_to_anchor=(1.05, 1),
                    loc="upper left", ncol=1, borderaxespad=0)

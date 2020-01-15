@@ -23,9 +23,9 @@ class MarkDuplicate(CollectInsertSizeMetrics):
                 1], rec[2], rec[4], rec[-2], rec[-1]
             #sample[sample]['Unmerged_reads'] = UNPAIRED_READS_EXAMINED
             #sample[sample]['Merged_reads'] = READ_PAIRS_EXAMINED
-            dedup[sample]['Mapped_rate(%)'] = round(
+            dedup[sample]['Mapped_rate'] = round(
                 (int(ESTIMATED_LIBRARY_SIZE)-int(UNMAPPED_READS))/int(ESTIMATED_LIBRARY_SIZE), 4)
-            dedup[sample]['PCR_duplication(%)'] = PERCENT_DUPLICATION
+            dedup[sample]['PCR_duplication'] = PERCENT_DUPLICATION
             #sample[sample]['Library_size'] = ESTIMATED_LIBRARY_SIZE
         df = pd.DataFrame.from_dict(dedup, orient='index')
         df = df.reset_index()

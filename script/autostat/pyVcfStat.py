@@ -27,9 +27,9 @@ def nesteddict():
 class VcfStat(object):
 
     #snp_col = ['Samples','Total_variants','Passing filter','Unpassing filter','Total_SNPs','Missing genotype','Same as reference','Homozygous','Heterozygous','Ti','Tv','Ti/Tv','Fraction of 1000genome(%)','Fraction of dbsnp(%)','Novel','Intergenic','Intronic','Exonic','Splicing','ncRNA','Downstream','Upstream','UTR3','UTR5','Unknown']
-    snp_col = ['Samples', 'Total_SNPs', 'Missing genotype', 'Homozygous', 'Heterozygous', 'Ti', 'Tv', 'Ti/Tv',
+    snp_col = ['Samples', 'Total_SNPs', 'Missing_genotype', 'Homozygous', 'Heterozygous', 'Ti', 'Tv', 'TivsTv',
                'Intergenic', 'Intronic', 'Exonic', 'Splicing', 'ncRNA', 'Downstream', 'Upstream', 'UTR3', 'UTR5', 'Unknown']
-    indel_col = ['Samples', 'Total_INDELs', 'Missing genotype', 'TotalInsertion', 'TotalDeletion', 'Homozygous', 'Heterozygous',
+    indel_col = ['Samples', 'Total_INDELs', 'Missing_genotype', 'TotalInsertion', 'TotalDeletion', 'Homozygous', 'Heterozygous',
                  'Intergenic', 'Intronic', 'Exonic', 'Splicing', 'ncRNA', 'Downstream', 'Upstream', 'UTR3', 'UTR5', 'Unknown']
     func_col = ['Samples', 'synonymous', 'nonsynonymous', 'stopgain', 'stoploss', 'frameshift_insertion', 'frameshift_deletion',
                 'frameshift_block_substitution', 'nonframeshift_insertion', 'nonframeshift_deletion', 'nonframeshift_block_substitution', 'ExonicFunc_Unknown']
@@ -69,7 +69,7 @@ class VcfStat(object):
             if self.variant_type == 'SNP':
                 source_dict[sample]['Ti'] = 0
                 source_dict[sample]['Tv'] = 0
-            source_dict[sample]['Missing genotype'] = 0
+            source_dict[sample]['Missing_genotype'] = 0
             source_dict[sample]['Same as reference'] = 0
             source_dict[sample]['Intergenic'] = 0
             source_dict[sample]['Intronic'] = 0
@@ -185,7 +185,7 @@ class VcfStat(object):
                 gene='error'
                 # print(
                 #     'can not find ALL.sites.2015_08 or Func.refGene or ExonicFunc.refGene.The relative record will be 0.\n')
-            print(gene)
+            #print(gene)
             if self.snp_or_indel(ref, alt) == self.variant_type:
                 self.snp_or_indel_record += 1
                 if filter_ == 'PASS':
@@ -204,7 +204,7 @@ class VcfStat(object):
                             samples_stat[sampleRecord.name]['Same as reference'] += 1
                             continue
                         elif alleles == (None, None):
-                            samples_stat[sampleRecord.name]['Missing genotype'] += 1
+                            samples_stat[sampleRecord.name]['Missing_genotype'] += 1
                             continue
                         else:
                             if gene not in samples_stat[sampleRecord.name]['gene'] and gene.find('x3b') == -1:
@@ -289,10 +289,9 @@ class VcfStat(object):
     def samples_stat_multi(self, samples_stat):
         for sample in samples_stat:
             if samples_stat[sample]['Total_{}s'.format(self.variant_type)] == 0:
-                raise SystemError(
-                    'snp and indel record should coexist in the same vcf.\n')
+                sys.exit()
             if self.variant_type == 'SNP':
-                samples_stat[sample]['Ti/Tv'] = samples_stat[sample]['Ti'] / \
+                samples_stat[sample]['TivsTv'] = samples_stat[sample]['Ti'] / \
                     samples_stat[sample]['Tv']
             else:
                 samples_stat[sample]['TotalDeletion'] = len(
@@ -329,7 +328,7 @@ class VcfStat(object):
 
     def plot_go(self,df,sample,db):
         df=df.reset_index()
-        df['log_pvalue']=-np.log10(df['p_value'].to_list())
+        df['log_pvalue']=-np.log10(df['p_value'])
         df=df.sort_values('log_pvalue',ascending=False)
         df['label']=df['name']+'  '+df['native']
         plt.clf()

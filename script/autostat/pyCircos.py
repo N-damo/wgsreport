@@ -66,14 +66,21 @@ class Circos():
             ref = rec.ref
             alt = rec.alts
             if self.snp_or_indel(ref, alt) == self.variant_type:
-                sample_dict['all'][self.chrom].append(self.position)
+                try:
+                    sample_dict['all'][self.chrom].append(self.position)
+                except KeyError:
+                        continue
                 for sampleRecorde in rec.samples.values():
                     GT = sampleRecorde['GT']
                     if GT == (0, 0) or GT == (None, None):
                         continue
                     else:
-                        sample_dict[sampleRecorde.name][self.chrom].append(
-                            self.position)
+                        try:
+                            sample_dict[sampleRecorde.name][self.chrom].append(
+                                self.position)
+                        except KeyError:
+                            continue
+
         return sample_dict
 
     def format_stat(self):
@@ -82,8 +89,6 @@ class Circos():
 
     def save_dict(self, all_dict):
         chr_list = self.chr_list_init()
-        with open('test.json', 'wt') as f:
-            json.dump(all_dict, f)
         for sample in all_dict:
             if sample == 'all':
                 pass
@@ -130,7 +135,7 @@ class Circos():
         self.plot_conf(sample)
         cmd = 'circos -conf circos2.conf -outputdir {outputdir} -outputfile {sample}_{variant}.circos.png'.format(
             outputdir=outputdir, sample=sample, variant=self.variant_type)
-        subprocess.call(cmd, shell=True)
+        #subprocess.call(cmd, shell=True)
         self.heatmap_plot(bed_root)
 
     def circos(self):
@@ -200,7 +205,7 @@ class Circos():
             data = data.drop('index', axis=1)
             df2[chr] = data[data['chrom'] == chr]['number']
         df2 = df2.fillna(0)
-        df2_norm_col = (df2-df2.mean())/df2.std()
+        df2_norm_col = (df2-df2.mean())/(df2.std()+1e-10)
         fig = plt.figure(figsize=(20, 15), tight_layout=True)
         sns.heatmap(df2_norm_col, robust=True, cmap='viridis')
         plt.title('Genome Distribution Heatmap of Molecular Markers')

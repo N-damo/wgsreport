@@ -20,22 +20,20 @@ class SV(object):
             for sample in self.groups:
                 bam = sample+'.dedup.bam'
                 bams.append(bam)
-            step1 = '{tool} call -x {excludeTemplates} -o sv.bcf -g {reference} {bams} ;'.format(
+            step1 = '{tool} call -x {excludeTemplates} -o delly.bcf -g {reference} {bams} ;'.format(
                 tool=self.delly, reference=self.reference, bams=' '.join(bams), excludeTemplates=self.excludeTemplates)
-            step2 = '{tool} filter -f germline -p -o delly.bcf sv.bcf'.format(
-                tool=self.delly)
+
         else:
-            step1 = '{tool} call -x {excludeTemplates} -o sv.bcf -g {reference} {sample}.dedup.bam ;'.format(
+            step1 = '{tool} call -x {excludeTemplates} -o delly.bcf -g {reference} {sample}.dedup.bam ;'.format(
                 tool=self.delly, reference=self.reference, sample=list(self.groups.keys())[0], excludeTemplates=self.excludeTemplates)
-            step2 = '{tool} filter -p -o delly.bcf sv.bcf ;'.format(
-                tool=self.delly)
-        step3 = 'bcftools view -O z -o delly.vcf.gz delly.bcf ;'
-        step4 = 'tabix delly.vcf.gz ;'
+
+        step2 = 'bcftools view -O z -o delly.vcf.gz delly.bcf ;'
+        step3 = 'tabix delly.vcf.gz ;'
         sge = "#$ -N delly\n#$ -pe smp 5\n#$ -q all.q\n#$ -cwd\nset -e\ncd {working_space}\nsource ~/.bash_profile\n".format(
             working_space=self.working_space)
         with open('{}/sv.bat'.format(self.working_space), 'wt') as f:
             f.write(sge)
-            f.write('\n'.join([step1, step2, step3, step4]))
+            f.write('\n'.join([step1, step2, step3]))
             f.write('wait ;')
         if run == 'off':
             logging.debug('just generate sv.bat,not run')

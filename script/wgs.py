@@ -18,6 +18,8 @@ def get_args():
         description='wgs workflow,including pipeline,autostat and html report generation')
     parser.add_argument('--input', '-i', help='sample info',
                         type=extend_file, required=True)
+    parser.add_argument('--output_path', '-o', help='output directory',
+                        default='./')
     parser.add_argument('--run', '-r', choices={
                         'on', 'off'}, help='if you choose run on,please add -r argument.the default is off', default='off')
     args = parser.parse_args()
@@ -76,11 +78,13 @@ class WGS(object):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(levelname)s:%(asctime)s:%(message)s')
     args = get_args()
     input = args.input
     run = args.run
+    output_path=args.output_path#project 目录
+    logging.basicConfig(level=logging.DEBUG,filename=os.path.join(output_path,'app.log'),
+                        format='%(levelname)s:%(asctime)s:%(message)s')
+    os.chdir(os.path.dirname(output_path))
     pipeline = WGS(input)
     # 样品信息，key=sampleName,value='fq1,fq2,adapter,library,sampleName
     groups = pipeline.groups

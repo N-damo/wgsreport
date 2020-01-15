@@ -23,13 +23,13 @@ class CollectWgsMetrics(CollectInsertSizeMetrics):
             rec = getline(log, line).strip().split()
             MEAN_COVERAGE, MEDIAN_COVERAGE, PCT_1X, PCT_5X, PCT_10X, PCT_20X, PCT_30X = rec[
                 1], rec[3], rec[12], rec[13], rec[14], rec[16], rec[18]
-            coverage[sample]['MEAN_COVERAGE(X)'] = MEAN_COVERAGE
-            coverage[sample]['MEDIAN_COVERAGE(X)'] = MEDIAN_COVERAGE
-            coverage[sample]['Coverage_at_least_1X(%)'] = PCT_1X  # 即测序覆盖度
-            coverage[sample]['Coverage_at_least_5X(%)'] = PCT_5X
-            coverage[sample]['Coverage_at_least_10X(%)'] = PCT_10X
-            coverage[sample]['Coverage_at_least_20X(%)'] = PCT_20X
-            coverage[sample]['Coverage_at_least_30X(%)'] = PCT_30X
+            coverage[sample]['MEAN_COVERAGE'] = MEAN_COVERAGE
+            coverage[sample]['MEDIAN_COVERAGE'] = MEDIAN_COVERAGE
+            coverage[sample]['Coverage_at_least_1X'] = PCT_1X  # 即测序覆盖度
+            coverage[sample]['Coverage_at_least_5X'] = PCT_5X
+            coverage[sample]['Coverage_at_least_10X'] = PCT_10X
+            coverage[sample]['Coverage_at_least_20X'] = PCT_20X
+            coverage[sample]['Coverage_at_least_30X'] = PCT_30X
             line = self.get_line(log, 'coverage')
             result = self.read_his(log, line)
             histogram = pd.DataFrame.from_dict(result, orient='index').T

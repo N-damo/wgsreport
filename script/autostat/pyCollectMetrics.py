@@ -19,8 +19,8 @@ def cov_flag_merge(module):
     metrics = CollectWgsMetrics(module).parse_metric()
     df = pd.merge(dedup, metrics, on='Samples')
     df = pd.merge(df, insert, on='Samples')
-    expect_columns_order = ['Samples', 'InsertSize_mean(bp)', 'Insert_std(bp)', 'Mapped_rate(%)', 'PCR_duplication(%)', 'MEAN_COVERAGE(X)', 'MEDIAN_COVERAGE(X)',
-                            'Coverage_at_least_1X(%)', 'Coverage_at_least_5X(%)', 'Coverage_at_least_10X(%)', 'Coverage_at_least_20X(%)', 'Coverage_at_least_30X(%)']
+    expect_columns_order = ['Samples', 'InsertSize_mean', 'Insert_std', 'Mapped_rate', 'PCR_duplication', 'MEAN_COVERAGE', 'MEDIAN_COVERAGE',
+                            'Coverage_at_least_1X', 'Coverage_at_least_5X', 'Coverage_at_least_10X', 'Coverage_at_least_20X', 'Coverage_at_least_30X']
     df = df.reindex(columns=expect_columns_order)
     df.to_csv('{}/mapping_stat.csv'.format(module), index=False, header=True)
 

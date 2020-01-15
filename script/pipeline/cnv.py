@@ -34,9 +34,9 @@ class CNV(object):
                 tool=self.cnvnator, sample=sample, bin_size=self.bin_size)
             step5 = '{tool} -root {sample}.root -call {bin_size} >{sample}.out ;'.format(
                 tool=self.cnvnator, sample=sample, bin_size=self.bin_size)
-            step6 = '{tool} -prefix {sample} -reference hg38 {sample}.out {chrom} |bgzip >{sample}.vcf.gz ;'.format(
+            step6 = '{tool} -prefix {sample} -reference hg38 {sample}.out {chrom} |bgzip >{sample}_cnvnator.vcf.gz ;'.format(
                 tool=self.cnvnator2vcf, sample=sample, chrom=self.chrom)
-            step7 = 'tabix {sample}.vcf.gz ;'.format(sample=sample)
+            step7 = 'tabix {sample}_cnvnator.vcf.gz ;'.format(sample=sample)
             sge = "#$ -N {sample}.cnvnator\n#$ -pe smp 5\n#$ -q all.q\n#$ -cwd\nset -e\ncd {working_space}\nsource ~/.bash_profile\n".format(
                 sample=sample, working_space=self.working_space)
             with open('{}/{}_cnv.bat'.format(self.working_space, sample), 'wt') as f:

@@ -54,18 +54,18 @@ class Basic_QC(object):
         df.to_csv('{module}/{sample}/{read}.base_quality.csv'.format(
             module=self.module, sample=sample, read=read), index=False, header=True)
         plt.clf()
+        
         plt.plot('pos', 'A', data=df, color='skyblue',
                  linewidth=2, linestyle='dashed')
         plt.plot('pos', 'T', data=df, color='red', linewidth=2)
-        plt.plot('pos', 'C', data=df, color='black',
+        plt.plot(df['pos'], df['C'], color='black',
                  linewidth=2, linestyle='dashed')
-        plt.plot('pos', 'G', data=df, color='green',
+        plt.plot(df['pos'], df['G'], color='green',
                  linewidth=2, linestyle='dashed')
         plt.plot('pos', 'mean', data=df, color='yellow',
                  linewidth=2, linestyle='dashed')
         plt.title('base quality')
-        plt.legend(bbox_to_anchor=(1.05, 1),
-                   loc="upper left", ncol=1, borderaxespad=0)
+        plt.legend()
         plt.tight_layout()
         plt.savefig('{module}/{sample}/{read}.base_quality.png'.format(
             module=self.module, sample=sample, read=read), format='png', dpi=200)
@@ -81,17 +81,16 @@ class Basic_QC(object):
         plt.plot('pos', 'A', data=df, color='skyblue',
                  linewidth=2, linestyle='dashed')
         plt.plot('pos', 'T', data=df, color='red', linewidth=2)
-        plt.plot('pos', 'C', data=df, color='black',
+        plt.plot(df['pos'], df['C'], color='black',
                  linewidth=2, linestyle='dashed')
-        plt.plot('pos', 'G', data=df, color='green',
+        plt.plot(df['pos'], df['G'], color='green',
                  linewidth=2, linestyle='dashed')
         plt.plot('pos', 'N', data=df, color='yellow',
                  linewidth=2, linestyle='dashed')
         plt.plot('pos', 'GC', data=df, color='blue',
                  linewidth=2, linestyle='solid')
         plt.title('base content & GC content')
-        plt.legend(bbox_to_anchor=(1.05, 1),
-                   loc="upper left", ncol=1, borderaxespad=0)
+        plt.legend()
         plt.tight_layout()
         plt.savefig('{module}/{sample}/{read}.base_content.png'.format(
             module=self.module, sample=sample, read=read), format='png', dpi=200)

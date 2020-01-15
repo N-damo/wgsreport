@@ -56,8 +56,8 @@ class CollectInsertSizeMetrics(object):
             line = self.get_line(log, 'MEDIAN_INSERT_SIZE') + 1  # 从1开始
             rec = getline(log, line).strip().split()
             insert_mean, insert_std = rec[5], rec[6]
-            insert[sample]['InsertSize_mean(bp)'] = insert_mean
-            insert[sample]['Insert_std(bp)'] = insert_std
+            insert[sample]['InsertSize_mean'] = insert_mean
+            insert[sample]['Insert_std'] = insert_std
             line = self.get_line(log, 'insert_size')
             result = self.read_his(log, line)
             histogram = pd.DataFrame.from_dict(result, orient='index').T
