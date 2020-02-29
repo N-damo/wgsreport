@@ -48,9 +48,8 @@ class CNV(object):
         cnv_stat = cnv_stat.reset_index()
         cnv_stat = cnv_stat.rename(columns={'index': 'Samples'})
         cnv_stat = cnv_stat.reindex(columns=self.stat_col)
-        sample=list(self.sample_stat)[0]
         cnv_stat.to_csv(
-            '{module}/{sample}cnv_stat.csv'.format(module=self.module,sample=sample), index=False, header=True)
+            '{module}/cnv_stat.csv'.format(module=self.module), index=False, header=True)
 
     def source_dict(self, sample_list):
         samples_sv = nesteddict()

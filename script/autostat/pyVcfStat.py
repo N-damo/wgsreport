@@ -288,8 +288,6 @@ class VcfStat(object):
 
     def samples_stat_multi(self, samples_stat):
         for sample in samples_stat:
-            if samples_stat[sample]['Total_{}s'.format(self.variant_type)] == 0:
-                sys.exit()
             if self.variant_type == 'SNP':
                 samples_stat[sample]['TivsTv'] = samples_stat[sample]['Ti'] / \
                     samples_stat[sample]['Tv']
